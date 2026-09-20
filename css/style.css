@@ -1,0 +1,2440 @@
+/* ==========================================================================
+   ARQUIVO: css/style.css
+   OBJETIVO: todo o visual do site (cores, fontes, espaçamentos e layout).
+             Uma única folha de estilo é usada por TODAS as páginas HTML.
+   TEMA: inspirado em FireRed/LeafGreen (Game Boy Advance) em modo escuro, com
+         fonte "pixelada" e molduras com aparência de console.
+
+   COMO LER ESTE ARQUIVO
+   - Cada SEÇÃO abaixo cuida de uma parte da interface e diz onde ela aparece.
+   - Seletores com "#" apontam para UM elemento (id). Seletores com "." apontam
+     para VÁRIOS elementos (classe).
+   - Quando duas regras têm a mesma força, vale a que vem DEPOIS no arquivo.
+     Por isso algumas seções mais para baixo "refinam" o que foi definido antes.
+   - Os "@media" aplicam regras só em certos tamanhos de tela (responsividade).
+   ========================================================================== */
+
+/* ==========================================================================
+   SEÇÃO 1 — FONTES
+   Objetivo: carregar do Google Fonts as duas fontes do projeto:
+     - Press Start 2P: fonte pixelada, usada em títulos, botões e rótulos;
+     - Pixelify Sans: fonte de texto corrido, mais fácil de ler.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400..700&display=swap');
+
+/* ==========================================================================
+   SEÇÃO 2 — RESET (ponto de partida limpo)
+   Objetivo: zerar as margens e os espaçamentos padrão do navegador, para o
+   layout ser igual em qualquer navegador.
+   ========================================================================== */
+
+/* Vale para todos os elementos.
+   box-sizing: border-box faz a largura já incluir borda e espaçamento interno. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* O atributo hidden (usado pelo JavaScript para mostrar/esconder) sempre esconde o elemento.
+   !important garante que nenhuma outra regra de display o faça reaparecer. */
+[hidden] {
+  display: none !important;
+}
+
+/* ==========================================================================
+   SEÇÃO 3 — VARIÁVEIS (cores, fontes, espaçamentos)
+   Objetivo: guardar valores usados em várias partes, em um só lugar. Para mudar
+   uma cor do site inteiro, basta alterar aqui. Uso: var(--nome).
+   :root representa o documento inteiro.
+
+   Legenda dos grupos de variáveis:
+     --fonte-*                  fontes (pixelada e de texto);
+     --fundo, --painel, --tela  cores de fundo (página, painéis e "telas" escuras);
+     --moldura-*                cores das bordas das molduras;
+     --fire, --favorito,
+     --vermelho, --chassi       cores de destaque (botões, estrela, cabeçalho);
+     --realce                   branco usado em hover, foco e seleção;
+     --texto-*, --cinza         cores de texto;
+     --barra-*                  cores das barras de atributos (alto/médio/baixo);
+     --erro-*                   cores das mensagens de erro;
+     --r, --r-sm                arredondamento dos cantos;
+     --espaco-*                 escala de espaçamentos (xs a xl);
+     --transicao                animação padrão de hover (em "passos", estilo pixel).
+   ========================================================================== */
+
+:root {
+  --fonte-pixel: 'Press Start 2P', 'Courier New', monospace;
+  --fonte-texto: 'Pixelify Sans', 'Trebuchet MS', Verdana, sans-serif;
+
+  --fundo: #16203a;
+  --painel: #2a3a5c;
+  --painel-alto: #38496e;
+  --tela: #0e1526;
+
+  --moldura-luz: #b6c3dc;
+  --moldura-luz-2: #6d78a8;
+  --moldura-tinta: #060a14;
+
+  --fire: #d8442c;
+  --fire-claro: #ec5c42;
+
+  --favorito: #f5c542;
+  --favorito-claro: #ffd869;
+
+  --vermelho: #ff0000;
+  --vermelho-claro: #ff3b3b;
+  --chassi: #d40000;
+
+  --realce: #ffffff;
+
+  --texto: #eef2f9;
+  --texto-suave: #94a3b8;
+  --texto-tinta: #0b1020;
+
+  --cinza: #cbd5e1;
+
+  --barra-alta: #40d14b;
+  --barra-media: #f7d23b;
+  --barra-baixa: #ee4b34;
+
+  --erro: #ff8a72;
+  --erro-fundo: #3a1a20;
+  --erro-moldura: #d8442c;
+
+  --r: 6px;
+  --r-sm: 4px;
+
+  --espaco-xs: .5rem;
+  --espaco-sm: .75rem;
+  --espaco-md: 1.25rem;
+  --espaco-lg: 2rem;
+  --espaco-xl: 3rem;
+
+  --transicao: all .12s steps(3, end);
+}
+
+/* ==========================================================================
+   SEÇÃO 4 — BASE (corpo da página, títulos e elementos gerais)
+   Objetivo: estilos padrão de body, main, títulos (h1, h2, h3), links, foco
+   do teclado, seleção de texto e imagens.
+   ========================================================================== */
+
+/* O body é uma coluna flexível de altura mínima da tela: isso empurra o rodapé
+   para baixo mesmo em páginas com pouco conteúdo. */
+body {
+  font-family: var(--fonte-texto);
+  background-color: var(--fundo);
+  color: var(--texto);
+  font-size: 17px;
+  line-height: 1.55;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Área principal: ocupa o espaço que sobra, é centralizada e tem largura máxima de 1180px. */
+main {
+  flex: 1;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 var(--espaco-md) var(--espaco-xl);
+}
+
+h1, h2, h3 {
+  font-family: var(--fonte-pixel);
+  font-weight: 400;
+  line-height: 1.4;
+  letter-spacing: .5px;
+}
+
+h1 {
+  font-size: .8rem;
+  color: var(--texto);
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+h2 {
+  font-size: .78rem;
+  color: var(--texto);
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+  margin-bottom: var(--espaco-sm);
+}
+
+h3 {
+  font-size: .68rem;
+  color: var(--texto);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Contorno branco visível quando um elemento é navegado pelo teclado (acessibilidade). */
+:focus-visible {
+  outline: 3px solid var(--realce);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--realce);
+  color: var(--texto-tinta);
+}
+
+/* Faz os sprites pixelados aparecerem nítidos, sem serem suavizados. */
+img {
+  image-rendering: crisp-edges;
+  image-rendering: pixelated;
+}
+
+/* ==========================================================================
+   SEÇÃO 5 — MOLDURAS (caixas e painéis principais)
+   Objetivo: dar a mesma "moldura de console" (borda clara + contorno escuro) a
+   todas as caixas principais: cards, ficha do Pokémon, mensagens de estado e
+   formulários de busca.
+   ========================================================================== */
+
+#lista-pokemons > li > article,
+#lista-favoritos > li > article,
+#conteudo,
+#estado-carregando,
+#estado-erro,
+#estado-vazio,
+#sem-resultado,
+#form-busca,
+#form-busca-fav {
+  background: var(--painel);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r);
+
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 3px var(--moldura-tinta);
+}
+
+/* ==========================================================================
+   SEÇÃO 6 — CABEÇALHO (logo e menu de navegação)
+   Onde aparece: topo de todas as páginas.
+   O header fica "grudado" no topo (position: sticky) ao rolar a página.
+   ========================================================================== */
+
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--espaco-md);
+
+  background: var(--tela);
+  color: var(--texto);
+  padding: var(--espaco-md) max(var(--espaco-md), calc((100vw - 1180px) / 2));
+  margin-bottom: var(--espaco-lg);
+  border-bottom: 4px solid var(--moldura-tinta);
+  box-shadow: inset 0 -6px 0 -2px var(--chassi);
+}
+
+/* Logo "OptimusDex" (no topo e no rodapé): fonte pixelada com sombra. */
+.marca,
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--fonte-pixel);
+  font-size: .8rem;
+  font-weight: 400;
+  letter-spacing: .5px;
+  text-transform: none;
+  color: var(--texto);
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+/* A segunda parte do nome ("Dex") em vermelho. */
+.marca span span,
+.footer-logo span:last-child span {
+  color: var(--fire);
+}
+
+.marca-icone {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  object-fit: contain;
+  border-radius: 50%;
+  clip-path: circle(48%);
+}
+
+a.marca {
+  transition: var(--transicao);
+}
+
+a.marca:hover {
+  color: var(--realce);
+}
+
+header h1 {
+  margin-right: auto;
+}
+
+header nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-sm);
+}
+
+/* Estrela do link "Meus Favoritos". */
+.icone-estrela {
+  display: inline-block;
+  font-family: var(--fonte-texto);
+  font-size: 1.5em;
+  line-height: 0;
+  vertical-align: -2px;
+  margin-right: .3rem;
+}
+
+/* Botões do menu: todos com o mesmo tamanho (190px x 48px) e visual de botão do console. */
+header nav a {
+  width: 190px;
+  min-width: 190px;
+  height: 48px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-xs);
+  flex: 0 0 190px;
+
+  background: var(--painel);
+  color: var(--texto);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r-sm);
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 2px var(--moldura-tinta);
+  font-family: var(--fonte-pixel);
+  font-size: .58rem;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: var(--transicao);
+}
+
+header nav a:hover {
+  background: var(--painel-alto);
+  border-color: var(--realce);
+}
+
+header nav a:active {
+  background: var(--realce);
+  color: var(--texto-tinta);
+}
+
+/* Título de cada página e cabeçalho da tela de favoritos (título + contador lado a lado). */
+.titulo-pagina {
+  margin-bottom: var(--espaco-md);
+}
+
+.cabecalho-pagina-favoritos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-md);
+  margin-bottom: var(--espaco-md);
+}
+
+/* Celular/tela estreita: centraliza a logo e os botões do menu. */
+@media (max-width: 800px) {
+  .marca {
+    justify-content: center;
+  }
+
+  header nav {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Contador "N favorito(s)" da tela de favoritos. */
+#contador {
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  color: var(--cinza);
+  background: var(--tela);
+  padding: .5rem .9rem;
+  border: 3px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+}
+
+/* ==========================================================================
+   SEÇÃO 7 — BUSCA (formulário de pesquisa)
+   Onde aparece: tela inicial (busca de Pokémon) e tela de favoritos (busca nos favoritos).
+   Inclui o campo de texto e o botão "X" que limpa a busca.
+   ========================================================================== */
+
+body > section {
+  padding: 0 var(--espaco-md);
+}
+
+#form-busca,
+#form-busca-fav {
+  max-width: 1180px;
+  margin: 0 auto var(--espaco-lg);
+  padding: var(--espaco-md);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-sm);
+  align-items: center;
+}
+
+#form-busca label,
+#form-busca-fav label {
+  width: 100%;
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+input[type="search"] {
+  flex: 1;
+  min-width: 240px;
+  padding: .7rem .9rem;
+  font-family: var(--fonte-texto);
+  font-size: 1.05rem;
+  color: var(--texto);
+  background: var(--tela);
+  border: 3px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+  transition: var(--transicao);
+}
+
+input[type="search"]::placeholder {
+  color: var(--moldura-luz-2);
+}
+
+input[type="search"]:focus {
+  outline: none;
+  border-color: var(--realce);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+}
+
+/* O campo de busca ganha um "X" padrão do navegador que NÃO pode ser redesenhado.
+   Por isso ele é escondido aqui e o "X" que aparece na tela é o botão .btn-limpar-busca do HTML. */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* O campo e o "X" dividem a mesma caixa; o "X" fica por cima, encostado na borda direita. */
+.campo-busca {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 240px;
+}
+
+.campo-busca input[type="search"] {
+  flex: 1;
+  min-width: 0;
+  padding-right: 2.5rem;
+}
+
+/* O "X" é um desenho em SVG (pixel art) usado como imagem de fundo do botão.
+   A moldura padrão dos botões é zerada: aqui o botão é só o desenho. */
+.btn-limpar-busca {
+  position: absolute;
+  right: 7px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  width: 28px;
+  height: 28px;
+  padding: 0;
+
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath fill='%23d8442c' d='M0 0h1v1H0zM1 0h1v1H1zM5 0h1v1H5zM6 0h1v1H6zM0 1h1v1H0zM1 1h1v1H1zM2 1h1v1H2zM4 1h1v1H4zM5 1h1v1H5zM6 1h1v1H6zM1 2h1v1H1zM2 2h1v1H2zM3 2h1v1H3zM4 2h1v1H4zM5 2h1v1H5zM2 3h1v1H2zM3 3h1v1H3zM4 3h1v1H4zM1 4h1v1H1zM2 4h1v1H2zM3 4h1v1H3zM4 4h1v1H4zM5 4h1v1H5zM0 5h1v1H0zM1 5h1v1H1zM2 5h1v1H2zM4 5h1v1H4zM5 5h1v1H5zM6 5h1v1H6zM0 6h1v1H0zM1 6h1v1H1zM5 6h1v1H5zM6 6h1v1H6z'/%3E%3C/svg%3E") center / 14px 14px no-repeat;
+  border: none;
+  border-radius: var(--r-sm);
+  box-shadow: none;
+
+  image-rendering: pixelated;
+  cursor: pointer;
+  transition: var(--transicao);
+}
+
+/* Remove a setinha branca que todo botão do projeto tem (não cabe num botão de 28px). */
+.btn-limpar-busca::before {
+  content: none;
+}
+
+/* O "X" some quando o campo está vazio. O :placeholder-shown só vale para campo vazio,
+   então o JavaScript não precisa controlar isso. */
+.campo-busca input[type="search"]:placeholder-shown ~ .btn-limpar-busca {
+  display: none;
+}
+
+/* Ao passar o mouse (ou focar pelo teclado), o "X" fica vermelho mais claro. */
+.btn-limpar-busca:hover,
+.btn-limpar-busca:focus-visible {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath fill='%23ff3b3b' d='M0 0h1v1H0zM1 0h1v1H1zM5 0h1v1H5zM6 0h1v1H6zM0 1h1v1H0zM1 1h1v1H1zM2 1h1v1H2zM4 1h1v1H4zM5 1h1v1H5zM6 1h1v1H6zM1 2h1v1H1zM2 2h1v1H2zM3 2h1v1H3zM4 2h1v1H4zM5 2h1v1H5zM2 3h1v1H2zM3 3h1v1H3zM4 3h1v1H4zM1 4h1v1H1zM2 4h1v1H2zM3 4h1v1H3zM4 4h1v1H4zM5 4h1v1H5zM0 5h1v1H0zM1 5h1v1H1zM2 5h1v1H2zM4 5h1v1H4zM5 5h1v1H5zM6 5h1v1H6zM0 6h1v1H0zM1 6h1v1H1zM5 6h1v1H5zM6 6h1v1H6z'/%3E%3C/svg%3E");
+  border-color: transparent;
+}
+
+/* Ao clicar, o "X" desce 1px (efeito de tecla apertada). O :not(:disabled) existe para
+   esta regra ter força suficiente para vencer a regra global de button:active. */
+.btn-limpar-busca:active:not(:disabled) {
+  background-color: transparent;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 7 7' shape-rendering='crispEdges'%3E%3Cpath fill='%23ff3b3b' d='M0 0h1v1H0zM1 0h1v1H1zM5 0h1v1H5zM6 0h1v1H6zM0 1h1v1H0zM1 1h1v1H1zM2 1h1v1H2zM4 1h1v1H4zM5 1h1v1H5zM6 1h1v1H6zM1 2h1v1H1zM2 2h1v1H2zM3 2h1v1H3zM4 2h1v1H4zM5 2h1v1H5zM2 3h1v1H2zM3 3h1v1H3zM4 3h1v1H4zM1 4h1v1H1zM2 4h1v1H2zM3 4h1v1H3zM4 4h1v1H4zM5 4h1v1H5zM0 5h1v1H0zM1 5h1v1H1zM2 5h1v1H2zM4 5h1v1H4zM5 5h1v1H5zM6 5h1v1H6zM0 6h1v1H0zM1 6h1v1H1zM5 6h1v1H5zM6 6h1v1H6z'/%3E%3C/svg%3E");
+  transform: translateY(calc(-50% + 1px));
+}
+
+/* ==========================================================================
+   SEÇÃO 8 — BOTÕES (ações e estados)
+   Objetivo: visual padrão de TODOS os botões, mais os ajustes de botões específicos
+   (Buscar, favoritar, shiny e a estrela dos cards).
+   ========================================================================== */
+
+/* Botão padrão: fonte pixelada, moldura clara e contorno escuro. */
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .4rem;
+  padding: .7rem 1.1rem;
+
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  text-transform: uppercase;
+  color: var(--texto);
+
+  background: var(--painel-alto);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r-sm);
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 2px var(--moldura-tinta);
+
+  cursor: pointer;
+  position: relative;
+  transition: var(--transicao);
+}
+
+/* Setinha branca (triângulo feito só com bordas) que aparece à esquerda do botão no hover.
+   Começa invisível (opacity: 0). */
+button::before {
+  content: '';
+  position: absolute;
+  left: 7px;
+  top: 50%;
+  margin-top: -4px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 7px;
+  border-color: transparent transparent transparent var(--realce);
+  opacity: 0;
+  transition: var(--transicao);
+}
+
+/* Mostra a setinha ao passar o mouse ou focar pelo teclado (só em botão habilitado). */
+button:hover:not(:disabled)::before,
+button:focus-visible:not(:disabled)::before {
+  opacity: 1;
+}
+
+/* Hover: a borda fica branca. */
+button:hover:not(:disabled) {
+  border-color: var(--realce);
+}
+
+/* Clique: o botão fica branco por um instante. */
+button:active:not(:disabled) {
+  background: var(--realce);
+  color: var(--texto-tinta);
+}
+
+/* Botão desabilitado (ex.: "Anterior" na primeira página): escurecido e sem clique. */
+button:disabled {
+  background: var(--tela);
+  border-color: var(--moldura-luz-2);
+  color: var(--texto-suave);
+  cursor: not-allowed;
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta), 0 0 0 2px var(--moldura-tinta);
+}
+
+/* Botão "Buscar": vermelho, para se destacar dos outros. */
+#form-busca button[type="submit"],
+#form-busca-fav button[type="submit"] {
+  background: var(--vermelho);
+  border-color: var(--vermelho);
+  color: #fff;
+}
+
+#form-busca button[type="submit"]:hover:not(:disabled),
+#form-busca-fav button[type="submit"]:hover:not(:disabled) {
+  background: var(--vermelho-claro);
+  border-color: var(--vermelho-claro);
+  color: #fff;
+}
+
+/* Botão de favoritar da tela de detalhes: amarelo quando o Pokémon já é favorito (aria-pressed="true"). */
+#btn-favorito {
+  width: 100%;
+  padding: .9rem;
+  font-size: .65rem;
+}
+
+#btn-favorito:hover:not(:disabled) {
+  background: var(--favorito);
+  border-color: var(--favorito);
+  color: var(--texto-tinta);
+}
+
+#btn-favorito[aria-pressed="true"] {
+  background: var(--favorito);
+  border-color: var(--favorito);
+  color: var(--texto-tinta);
+}
+
+#btn-favorito[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--vermelho);
+  border-color: var(--vermelho);
+  color: #fff;
+}
+
+/* Botão "Ver shiny": fica branco enquanto o modo shiny está ligado. */
+#btn-shiny {
+  width: 100%;
+  padding: .75rem;
+  font-size: .58rem;
+}
+
+#btn-shiny[aria-pressed="true"] {
+  background: var(--realce);
+  border-color: var(--realce);
+  color: var(--texto-tinta);
+}
+
+#btn-shiny[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--realce);
+  color: var(--texto-tinta);
+}
+
+/* Estrela de favoritar no canto do card (posicionada sobre o card com position: absolute). */
+.estrela-favorito {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border-width: 2px;
+  border-radius: var(--r-sm);
+
+  font-family: var(--fonte-texto);
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--texto-suave);
+}
+
+.estrela-favorito::before {
+  content: none;
+}
+
+.estrela-favorito:hover:not(:disabled) {
+  color: var(--realce);
+}
+
+.estrela-favorito[aria-pressed="true"] {
+  background: var(--favorito);
+  border-color: var(--favorito);
+  color: var(--texto-tinta);
+}
+
+.estrela-favorito[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--favorito-claro);
+  border-color: var(--favorito-claro);
+  color: var(--texto-tinta);
+}
+
+/* ==========================================================================
+   SEÇÃO 9 — FILTROS (painel e botões de opção)
+   Onde aparece: painel que abre no botão "Filtros" da tela inicial.
+   Os botões de opção (.chip) são criados pelo JavaScript.
+   ========================================================================== */
+
+#painel-filtros {
+  max-width: 1180px;
+  margin: calc(var(--espaco-lg) * -1 + var(--espaco-xs)) auto var(--espaco-lg);
+  padding: var(--espaco-md);
+  background: var(--painel);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r);
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 3px var(--moldura-tinta);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-md);
+}
+
+#painel-filtros fieldset {
+  border: 0;
+}
+
+#painel-filtros legend {
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  margin-bottom: var(--espaco-xs);
+}
+
+/* Grupo de chips: ficam lado a lado e quebram de linha quando falta espaço (flex-wrap). */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+}
+
+.chip {
+  padding: .45rem .7rem;
+  font-size: .52rem;
+  border-width: 2px;
+}
+
+.chip::before {
+  content: none;
+}
+
+/* Região marcada: fica branca. */
+#filtro-regioes .chip[aria-pressed="true"] {
+  background: var(--realce);
+  border-color: var(--realce);
+  color: var(--texto-tinta);
+}
+
+#filtro-regioes .chip[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--realce);
+  color: var(--texto-tinta);
+}
+
+/* Chips de tipo e categoria: escurecidos quando desmarcados (filter) e com destaque
+   ao marcar. A cor de cada tipo vem das regras [data-tipo] da SEÇÃO 11. */
+#filtro-tipos .chip,
+#filtro-categorias .chip {
+  color: var(--texto-tinta);
+  filter: brightness(.72) saturate(.85);
+}
+
+#filtro-tipos .chip:hover:not(:disabled),
+#filtro-categorias .chip:hover:not(:disabled) {
+  color: var(--texto-tinta);
+  filter: brightness(.9);
+}
+
+#filtro-tipos .chip[aria-pressed="true"],
+#filtro-categorias .chip[aria-pressed="true"] {
+  filter: none;
+  box-shadow:
+    0 0 0 2px var(--moldura-tinta),
+    0 0 0 5px var(--realce);
+}
+
+/* Cor de cada categoria especial. */
+#filtro-categorias .chip[data-valor="lendario"] { background: #d9a441; }
+#filtro-categorias .chip[data-valor="mitico"]   { background: #b98ad6; }
+#filtro-categorias .chip[data-valor="mega"]     { background: #5fc9b8; }
+#filtro-categorias .chip[data-valor="gmax"]     { background: #e5666b; }
+
+/* Aviso sobre Mega/Gigantamax, com uma barra vermelha na lateral. */
+#aviso-filtro {
+  font-family: var(--fonte-texto);
+  font-size: .95rem;
+  color: var(--texto-suave);
+  border-left: 4px solid var(--fire);
+  padding-left: var(--espaco-xs);
+}
+
+/* Linha com os botões "Limpar" e "Aplicar", alinhados à direita. */
+.filtros-acoes {
+  display: flex;
+  gap: var(--espaco-sm);
+  justify-content: flex-end;
+  border-top: 2px solid var(--moldura-luz-2);
+  padding-top: var(--espaco-md);
+}
+
+#btn-aplicar-filtros {
+  background: var(--fire);
+  border-color: var(--fire);
+  color: #fff;
+}
+
+#btn-aplicar-filtros:hover:not(:disabled) {
+  background: var(--fire-claro);
+  color: #fff;
+}
+
+/* ==========================================================================
+   SEÇÃO 10 — CARDS (lista de Pokémon)
+   Onde aparece: tela inicial (lista) e tela de favoritos.
+   A lista é uma grade (display: grid) que se adapta à largura da tela:
+   repeat(auto-fill, minmax(215px, 1fr)) = quantas colunas de pelo menos 215px couberem.
+   ========================================================================== */
+
+#lista-pokemons,
+#lista-favoritos {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+  gap: var(--espaco-lg) var(--espaco-md);
+  margin-bottom: var(--espaco-xl);
+}
+
+#lista-pokemons > li > article,
+#lista-favoritos > li > article {
+  padding: var(--espaco-md) var(--espaco-sm) var(--espaco-sm);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-xs);
+  text-align: center;
+  position: relative;
+  transition: var(--transicao);
+}
+
+/* Pequena "pokébola" desenhada no canto do card só com gradientes (sem imagem).
+   Fica meio apagada e acende no hover. */
+#lista-pokemons > li > article::after,
+#lista-favoritos > li > article::after {
+  content: '';
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 50%,
+      var(--painel) 0 2px, var(--moldura-tinta) 2px 4px, transparent 4px),
+    linear-gradient(180deg,
+      var(--fire) 0 calc(50% - 1px),
+      var(--moldura-tinta) calc(50% - 1px) calc(50% + 1px),
+      #e9edff calc(50% + 1px) 100%);
+  box-shadow: 0 0 0 2px var(--moldura-tinta);
+  opacity: .5;
+  transition: var(--transicao);
+}
+
+#lista-pokemons > li > article:hover,
+#lista-favoritos > li > article:hover {
+  border-color: var(--realce);
+}
+
+#lista-pokemons > li > article:hover::after,
+#lista-favoritos > li > article:hover::after {
+  opacity: 1;
+}
+
+#lista-pokemons article a,
+#lista-favoritos article a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaco-xs);
+  width: 100%;
+}
+
+#lista-pokemons article img,
+#lista-favoritos article img {
+  width: 146px;
+  height: 146px;
+  object-fit: contain;
+  padding: 6px;
+  background: var(--tela);
+  border: 3px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+  transition: var(--transicao);
+}
+
+#lista-pokemons article:hover img,
+#lista-favoritos article:hover img {
+  border-color: var(--realce);
+}
+
+#lista-pokemons h3,
+#lista-favoritos h3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  font-size: .68rem;
+  line-height: 1.5;
+  text-transform: capitalize;
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+/* Número (#001) e nome do Pokémon dentro do card: número em cinza, nome em branco. */
+.dex-numero {
+  font-size: .58rem;
+  color: var(--cinza);
+}
+
+.dex-nome {
+  color: #fff;
+}
+
+/* ==========================================================================
+   SEÇÃO 11 — TIPOS (etiquetas coloridas)
+   Objetivo: as plaquinhas de tipo (Fogo, Água, ...). Usadas nos cards, nos detalhes,
+   nas listas de efetividade e nos chips de filtro.
+   ========================================================================== */
+
+.tipos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  justify-content: center;
+  margin-top: auto;
+  padding-top: var(--espaco-xs);
+}
+
+/* Plaquinha padrão (cinza). A cor de cada tipo vem das regras [data-tipo] abaixo. */
+.tipo {
+  font-family: var(--fonte-pixel);
+  font-size: .52rem;
+  text-transform: uppercase;
+  color: var(--texto-tinta);
+  background: #8a90a8;
+  padding: .4rem .55rem;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px var(--moldura-tinta);
+  white-space: nowrap;
+}
+
+/* A cor é escolhida pelo atributo data-tipo, que o JavaScript coloca em cada plaquinha
+   com o nome do tipo em português. */
+[data-tipo="Normal"]     { background: #b9b98e; }
+[data-tipo="Lutador"]    { background: #e0483f; }
+[data-tipo="Voador"]     { background: #b7a3f7; }
+[data-tipo="Venenoso"]   { background: #bf5cbd; }
+[data-tipo="Terrestre"]  { background: #e6c777; }
+[data-tipo="Pedra"]      { background: #c5b04a; }
+[data-tipo="Inseto"]     { background: #b9cc2c; }
+[data-tipo="Fantasma"]   { background: #8b6bb0; }
+[data-tipo="Aço"]        { background: #c3c3dc; }
+[data-tipo="Fogo"]       { background: #f79241; }
+[data-tipo="Água"]       { background: #74a0f5; }
+[data-tipo="Grama"]      { background: #86d156; }
+[data-tipo="Elétrico"]   { background: #ffdc3c; }
+[data-tipo="Psíquico"]   { background: #fd6a92; }
+[data-tipo="Gelo"]       { background: #a7e6e3; }
+[data-tipo="Dragão"]     { background: #8b5efd; }
+[data-tipo="Sombrio"]    { background: #9b7f66; }
+[data-tipo="Fada"]       { background: #eb9cc0; }
+[data-tipo="Estelar"]    { background: #5fc9b8; }
+
+/* ==========================================================================
+   SEÇÃO 12 — FAVORITOS (botão de remover)
+   Onde aparece: cards da tela de favoritos. O botão "Remover dos favoritos" ocupa a
+   largura do card e fica vermelho ao passar o mouse.
+   ========================================================================== */
+
+#lista-favoritos article > button {
+  width: 100%;
+  margin-top: var(--espaco-xs);
+  font-size: .52rem;
+  padding: .55rem .6rem;
+}
+
+#lista-favoritos article > button:hover:not(:disabled) {
+  background: var(--vermelho);
+  border-color: var(--vermelho);
+  color: #fff;
+}
+
+/* ==========================================================================
+   SEÇÃO 13 — DETALHES: FICHA PRINCIPAL
+   Onde aparece: tela de detalhes (detalhes.html).
+   O #conteudo é uma grade: em tela pequena tem 1 coluna; em tela grande (860px ou mais),
+   2 colunas: o visor (300px, à esquerda) e a ficha (o resto, à direita).
+   ========================================================================== */
+
+#conteudo {
+  padding: var(--espaco-lg);
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--espaco-md) var(--espaco-lg);
+  align-content: start;
+}
+
+@media (min-width: 860px) {
+  #conteudo {
+    grid-template-columns: 300px 1fr;
+    align-items: start;
+  }
+
+  #conteudo > .visor { grid-column: 1; }
+  #conteudo > .ficha { grid-column: 2; }
+}
+
+/* Coluna esquerda: imagem, botões e história, empilhados na vertical. */
+.visor {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-md);
+}
+
+/* Coluna direita: as seções da ficha (tipos, habilidades, evolução, atributos...). */
+.ficha {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaco-lg);
+}
+
+/* Visor: caixa escura com a imagem grande do Pokémon, o número e o nome. */
+#conteudo figure {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--espaco-md);
+  background: var(--tela);
+  border: 3px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+}
+
+#poke-imagem {
+  width: 192px;
+  height: 192px;
+  object-fit: contain;
+}
+
+#conteudo figcaption {
+  margin-top: var(--espaco-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .45rem;
+  font-family: var(--fonte-pixel);
+  font-size: .8rem;
+  text-transform: capitalize;
+  text-align: center;
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+#poke-numero {
+  font-size: .62rem;
+  font-weight: 400;
+  color: var(--cinza);
+}
+
+#poke-nome {
+  color: #fff;
+}
+
+/* Listas de tipos e habilidades: lado a lado, quebrando de linha. */
+#poke-tipos,
+#poke-habilidades {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+}
+
+#poke-habilidades li {
+  font-family: var(--fonte-texto);
+  font-size: 1rem;
+  color: var(--texto);
+  background: var(--painel-alto);
+  padding: .35rem .8rem;
+  border: 2px solid var(--moldura-luz-2);
+  border-radius: 4px;
+}
+
+/* Triângulo vermelho antes de cada título de seção (pseudo-elemento ::before). */
+#conteudo section h2::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: .5rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 5px 0 5px 8px;
+  border-color: transparent transparent transparent var(--fire);
+}
+
+/* ==========================================================================
+   SEÇÃO 14 — EVOLUÇÃO: LINHA E ESTÁGIOS (regras iniciais)
+   Onde aparece: seção "Linha evolutiva" da tela de detalhes.
+   Estas regras são a primeira versão; a SEÇÃO 25 refina o layout depois.
+   ========================================================================== */
+
+#secao-evolucao p {
+  font-family: var(--fonte-texto);
+  font-size: 1rem;
+  color: var(--texto-suave);
+}
+
+#evolucao-erro {
+  color: var(--erro);
+}
+
+/* Fileira da cadeia evolutiva: uma linha só (sem quebra); se não couber, rola para o lado. */
+#linha-evolucao {
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: var(--espaco-sm);
+  margin-top: var(--espaco-xs);
+  padding-bottom: var(--espaco-xs);
+  overflow-x: auto;
+}
+
+.estagio {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-sm);
+  flex: none;
+}
+
+/* Seta (triângulo) desenhada entre um estágio e o seguinte. */
+.estagio + .estagio::before {
+  content: '';
+  flex: none;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 0 8px 12px;
+  border-color: transparent transparent transparent var(--realce);
+}
+
+/* Cada Pokémon da cadeia: um link com imagem, número e nome. */
+.evo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .3rem;
+  padding: var(--espaco-xs);
+  border: 2px solid transparent;
+  border-radius: var(--r-sm);
+  transition: var(--transicao);
+}
+
+.evo img {
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+  padding: 4px;
+  background: var(--tela);
+  border: 2px solid var(--moldura-luz-2);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+  transition: var(--transicao);
+}
+
+.evo .dex-numero,
+.evo .dex-nome {
+  font-family: var(--fonte-pixel);
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+.evo .dex-nome {
+  font-size: .58rem;
+  text-transform: capitalize;
+}
+
+.evo-requisito {
+  max-width: 136px;
+  margin-top: .15rem;
+  font-family: var(--fonte-texto);
+  font-size: .82rem;
+  line-height: 1.35;
+  color: var(--cinza);
+  text-align: center;
+}
+
+.evo:hover img {
+  border-color: var(--realce);
+}
+
+/* Destaque do Pokémon que está aberto na tela. */
+.evo-atual {
+  border-color: var(--realce);
+  background: rgba(255, 255, 255, .07);
+}
+
+.evo-atual img {
+  border-color: var(--realce);
+}
+
+/* ==========================================================================
+   SEÇÃO 15 — ANIMAÇÕES (efeito do botão Ver shiny)
+   Onde aparece: ao clicar em "Ver shiny" na tela de detalhes.
+   @keyframes descreve os passos de uma animação. As classes são aplicadas pelo JavaScript.
+     - .cintilando: clarão (brilho e leve zoom) nos sprites;
+     - .faisca: estrelinhas que surgem em volta da imagem grande.
+   ========================================================================== */
+
+@keyframes clarao {
+  0%   { filter: brightness(4) contrast(1.4); transform: scale(1.07); }
+  18%  { filter: none;                        transform: scale(.97);  }
+  36%  { filter: brightness(2.6);             transform: scale(1.03); }
+  54%  { filter: none;                        transform: scale(1);    }
+  100% { filter: none;                        transform: scale(1);    }
+}
+
+.cintilando {
+  animation: clarao .5s steps(1, end) var(--atraso-brilho, 0ms) 1 both;
+}
+
+@keyframes faiscar {
+  0%   { opacity: 0; transform: scale(0)   rotate(0deg);  }
+  30%  { opacity: 1; transform: scale(1.2) rotate(30deg); }
+  65%  { opacity: 1; transform: scale(.75) rotate(60deg); }
+  100% { opacity: 0; transform: scale(0)   rotate(90deg); }
+}
+
+/* A faísca é um quadrado branco recortado em formato de estrela (clip-path). */
+.faisca {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  background: #fff;
+  clip-path: polygon(
+    50% 0%, 59% 41%, 100% 50%, 59% 59%,
+    50% 100%, 41% 59%, 0% 50%, 41% 41%
+  );
+  animation: faiscar .55s steps(4, end) var(--atraso-faisca, 0ms) 1 both;
+}
+
+/* ==========================================================================
+   SEÇÃO 16 — ATRIBUTOS (tabela e barras)
+   Onde aparece: tabela de atributos (detalhes) e tabela de comparação.
+   As barras coloridas usam o elemento <progress>; a cor vem do atributo data-nivel
+   (alto = verde, baixo = vermelho; médio usa a cor padrão amarela).
+   ========================================================================== */
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+th, td {
+  padding: .55rem .7rem;
+  text-align: left;
+  background: var(--painel-alto);
+  vertical-align: middle;
+}
+
+tr > *:first-child {
+  border-radius: var(--r-sm) 0 0 var(--r-sm);
+}
+
+tr > *:last-child {
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+thead th {
+  background: transparent;
+  font-family: var(--fonte-pixel);
+  font-size: .52rem;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  padding-bottom: 0;
+}
+
+tbody th {
+  font-family: var(--fonte-pixel);
+  font-size: .55rem;
+  color: var(--texto-suave);
+  border-left: 4px solid var(--fire);
+  white-space: nowrap;
+}
+
+tbody td {
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  color: #fff;
+}
+
+tbody td:last-child {
+  width: 55%;
+}
+
+.atributos-total {
+  margin-top: var(--espaco-sm);
+  padding: .7rem 1rem;
+  background: var(--tela);
+  border: 2px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  color: var(--texto-suave);
+  text-align: right;
+}
+
+.atributos-total strong {
+  color: var(--texto);
+  font-size: .7rem;
+}
+
+/* Barra de progresso: o -webkit- e o -moz- existem porque cada navegador desenha a barra de um jeito. */
+progress {
+  display: block;
+  width: 100%;
+  height: 16px;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid var(--moldura-tinta);
+  border-radius: 3px;
+  background: #0a0f22;
+  overflow: hidden;
+}
+
+progress::-webkit-progress-bar {
+  background: #0a0f22;
+}
+
+progress::-webkit-progress-value {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .45) 0 3px,
+    var(--barra-media) 3px 100%);
+}
+
+progress::-moz-progress-bar {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .45) 0 3px,
+    var(--barra-media) 3px 100%);
+}
+
+progress[data-nivel="alto"]::-webkit-progress-value {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .45) 0 3px, var(--barra-alta) 3px 100%);
+}
+
+progress[data-nivel="alto"]::-moz-progress-bar {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .45) 0 3px, var(--barra-alta) 3px 100%);
+}
+
+progress[data-nivel="baixo"]::-webkit-progress-value {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .45) 0 3px, var(--barra-baixa) 3px 100%);
+}
+
+progress[data-nivel="baixo"]::-moz-progress-bar {
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, .45) 0 3px, var(--barra-baixa) 3px 100%);
+}
+
+/* ==========================================================================
+   SEÇÃO 17 — ESTADOS (carregando, erro e vazio)
+   Objetivo: visual das mensagens que o JavaScript alterna na tela:
+   "Carregando...", "Deu ruim" (erro) e "Nenhum resultado".
+   ========================================================================== */
+
+#estado-carregando,
+#estado-erro,
+#estado-vazio,
+#sem-resultado {
+  text-align: center;
+  padding: var(--espaco-xl) var(--espaco-md);
+  margin: var(--espaco-lg) 0;
+  font-family: var(--fonte-pixel);
+  font-size: .68rem;
+  line-height: 2;
+}
+
+/* Ícone da pokébola que chacoalha enquanto carrega (animação chacoalhar). */
+#estado-carregando::before {
+  content: '';
+  display: block;
+  width: 34px;
+  height: 34px;
+  margin: 0 auto var(--espaco-md);
+  background: url('../img/pokeicon.png') center / contain no-repeat;
+  border-radius: 50%;
+  clip-path: circle(48%);
+  animation: chacoalhar 1.1s steps(8, end) infinite;
+}
+
+/* Setinha que pisca abaixo do ícone (animação piscar). */
+#estado-carregando::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  margin: var(--espaco-sm) auto 0;
+  border-style: solid;
+  border-width: 9px 7px 0 7px;
+  border-color: var(--realce) transparent transparent transparent;
+  animation: piscar 1s steps(2, end) infinite;
+}
+
+@keyframes chacoalhar {
+  0%, 100% { transform: rotate(-14deg); }
+  50%      { transform: rotate(14deg); }
+}
+
+@keyframes piscar {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* Mensagem de erro: fundo e borda avermelhados. */
+#estado-erro {
+  background: var(--erro-fundo);
+  border-color: var(--erro-moldura);
+  color: var(--erro);
+}
+
+#estado-erro h2 {
+  font-size: .82rem;
+  color: var(--erro);
+}
+
+#estado-vazio h2 {
+  font-size: .82rem;
+  color: var(--texto);
+}
+
+#estado-erro #mensagem-erro,
+#estado-vazio p {
+  font-family: var(--fonte-texto);
+  font-size: 1.05rem;
+  color: var(--texto-suave);
+  max-width: 46ch;
+  margin: 0 auto var(--espaco-md);
+}
+
+#estado-erro #mensagem-erro {
+  color: var(--erro);
+}
+
+#estado-vazio a {
+  display: inline-block;
+  padding: .7rem 1.1rem;
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  text-transform: uppercase;
+  background: var(--painel-alto);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r-sm);
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 2px var(--moldura-tinta);
+  transition: var(--transicao);
+}
+
+#estado-vazio a:hover {
+  border-color: var(--realce);
+}
+
+/* ==========================================================================
+   SEÇÃO 18 — PAGINAÇÃO (navegação entre páginas)
+   Onde aparece: rodapé da lista da tela inicial (botões Anterior / Próxima e "Página X de Y").
+   ========================================================================== */
+
+#paginacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espaco-md);
+  margin-top: var(--espaco-lg);
+}
+
+#info-pagina {
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  color: var(--cinza);
+  background: var(--tela);
+  padding: .7rem 1rem;
+  border: 3px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+  white-space: nowrap;
+}
+
+#paginacao button::before {
+  content: none;
+}
+
+/* ==========================================================================
+   SEÇÃO 19 — RODAPÉ (créditos e links)
+   Onde aparece: fim de todas as páginas.
+   .footer-container é uma grade de 4 colunas (marca, projeto, recursos, grupo).
+   ========================================================================== */
+
+.site-footer {
+  margin-top: var(--espaco-xl);
+  background: var(--tela);
+  color: var(--texto-suave);
+  border-top: 4px solid var(--moldura-tinta);
+  box-shadow: inset 0 6px 0 -2px var(--chassi);
+  font-family: var(--fonte-texto);
+}
+
+.footer-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 48px 30px 34px;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 44px;
+}
+
+.footer-brand {
+  max-width: 350px;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.footer-brand p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--texto-suave);
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-section h3 {
+  font-size: .62rem;
+  color: var(--texto);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+.footer-section a,
+.footer-section p {
+  font-size: 1rem;
+  color: var(--texto-suave);
+}
+
+.footer-section a {
+  transition: var(--transicao);
+}
+
+/* Setinha vermelha que surge antes do link ao passar o mouse. */
+.footer-section a::before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: .4rem;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 4px 0 4px 6px;
+  border-color: transparent transparent transparent var(--fire);
+  opacity: 0;
+  transition: var(--transicao);
+}
+
+.footer-section a:hover {
+  color: var(--realce);
+}
+
+.footer-section a:hover::before {
+  opacity: 1;
+}
+
+.footer-bottom {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 18px 30px;
+  border-top: 2px solid var(--moldura-luz-2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+}
+
+.footer-bottom p {
+  font-size: .95rem;
+  color: var(--texto-suave);
+}
+
+/* ==========================================================================
+   SEÇÃO 20 — RESPONSIVIDADE (telas menores)
+   Objetivo: adaptar o layout a tablets e celulares (RNF002).
+     - até 800px: rodapé em 2 colunas; menu, busca, paginação e filtros passam a
+       ocupar a largura toda e a cadeia evolutiva vira uma coluna;
+     - até 500px: rodapé em 1 coluna.
+   ========================================================================== */
+
+@media (max-width: 800px) {
+  .footer-container {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Ajustes gerais para telas de até 800px. */
+@media (max-width: 800px) {
+  body {
+    font-size: 16px;
+  }
+
+  header {
+    gap: var(--espaco-sm);
+  }
+
+  header h1 {
+    margin-right: 0;
+    width: calc(100%);
+  }
+
+  header nav,
+  header nav a {
+    width: 100%;
+  }
+
+  header nav a {
+    justify-content: center;
+  }
+
+  header nav a {
+    flex: 1 1 100%;
+  }
+
+  #form-busca,
+  #form-busca-fav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #form-busca button[type="submit"],
+  #form-busca-fav button[type="submit"] {
+    width: 100%;
+  }
+
+  #paginacao {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #paginacao button,
+  #info-pagina {
+    width: 100%;
+  }
+
+  #conteudo {
+    padding: var(--espaco-md);
+  }
+
+  tbody td:last-child {
+    width: 40%;
+  }
+
+  .filtros-acoes {
+    flex-direction: column;
+  }
+
+  .chip {
+    padding: .55rem .7rem;
+  }
+
+  #linha-evolucao,
+  .estagio {
+    flex-direction: column;
+  }
+
+  #linha-evolucao {
+    align-items: center;
+    overflow-x: visible;
+  }
+
+  .estagio + .estagio::before {
+    align-self: center;
+    border-width: 12px 8px 0 8px;
+    border-color: var(--realce) transparent transparent transparent;
+  }
+
+  #lista-variacoes {
+    justify-content: center;
+  }
+}
+
+/* Celulares muito estreitos: rodapé em uma coluna só. */
+@media (max-width: 500px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    padding: 36px 24px 28px;
+  }
+
+  .footer-brand {
+    grid-column: auto;
+  }
+
+  .footer-bottom {
+    padding: 18px 20px;
+  }
+}
+
+/* ==========================================================================
+   SEÇÃO 21 — ACESSIBILIDADE (movimento reduzido)
+   Objetivo: quem configurou o sistema para "reduzir movimento" (por conforto ou
+   saúde) vê as animações e transições praticamente desligadas.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   SEÇÃO 22 — EFETIVIDADE (vantagens, fraquezas e imunidades)
+   Onde aparece: seções "Super efetivo contra", "Resistências", "Fraquezas" e
+   "Imunidades" da tela de detalhes.
+   ========================================================================== */
+
+#secao-super-efetivo .tipo,
+#secao-vantagens .tipo,
+#secao-fraquezas .tipo,
+#secao-imunidades .tipo {
+  border: 2px solid var(--moldura-luz-2);
+  box-shadow: inset 0 0 0 1px var(--moldura-tinta);
+}
+
+.descricao-eficacia {
+  margin-bottom: .65rem;
+  color: var(--texto-suave);
+  font-size: .95rem;
+}
+
+/* ==========================================================================
+   SEÇÃO 23 — COMPARAÇÃO (seleção e tabela)
+   Onde aparece: botões "Comparar" (cards e detalhes), contador "Comparar (n/6)" no menu
+   e a tela comparar.html com a tabela lado a lado.
+   ========================================================================== */
+
+.link-comparacao {
+  white-space: nowrap;
+}
+
+/* Botão "Comparar" do card: fica branco quando o Pokémon está selecionado. */
+.botao-comparar {
+  width: 100%;
+  margin-top: .65rem;
+  padding: .55rem .75rem;
+  font-size: .58rem;
+}
+
+.botao-comparar[aria-pressed="true"] {
+  background: var(--realce);
+  border-color: var(--realce);
+  color: var(--texto-tinta);
+}
+
+.botao-comparar[aria-pressed="true"]:hover:not(:disabled) {
+  background: var(--realce);
+  border-color: var(--realce);
+  color: var(--texto-tinta);
+}
+
+/* Botão de comparar da tela de detalhes. */
+#btn-comparar {
+  width: 100%;
+  padding: .75rem;
+  font-size: .62rem;
+}
+
+#btn-comparar[aria-pressed="true"] {
+  background: var(--realce);
+  border-color: var(--realce);
+  color: var(--texto-tinta);
+}
+
+/* Título da tela de comparação e botão "Limpar comparação". */
+.cabecalho-comparacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espaco-md);
+  margin-bottom: var(--espaco-lg);
+}
+
+.cabecalho-comparacao p {
+  color: var(--texto-suave);
+  margin-top: .4rem;
+}
+
+/* Caixa de "nada selecionado" e caixa da tabela usam a mesma moldura. */
+.estado-comparacao-vazio,
+.tabela-comparacao {
+  background: var(--painel);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r);
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 3px var(--moldura-tinta);
+  padding: var(--espaco-lg);
+}
+
+.estado-comparacao-vazio {
+  text-align: center;
+}
+
+.estado-comparacao-vazio p {
+  color: var(--texto-suave);
+  margin: var(--espaco-sm) 0 var(--espaco-md);
+}
+
+.botao-comparacao-link {
+  display: inline-block;
+  padding: .7rem 1rem;
+  border: 2px solid var(--moldura-luz);
+  background: var(--tela);
+  font-family: var(--fonte-pixel);
+  font-size: .55rem;
+}
+
+.botao-comparacao-link:hover {
+  border-color: var(--realce);
+}
+
+.tabela-comparacao {
+  overflow: hidden;
+}
+
+/* Permite rolar a tabela para o lado em telas pequenas (overflow-x: auto). */
+.tabela-comparacao-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.tabela-comparacao table {
+  width: 100%;
+  min-width: 720px;
+  table-layout: fixed;
+}
+
+/* Cabeçalho da tabela: uma coluna por Pokémon (imagem, número, nome e botão ×). */
+.tabela-comparacao thead th {
+  width: auto;
+  min-width: 0;
+  text-align: center;
+  vertical-align: top;
+  position: relative;
+  padding: .75rem .5rem;
+}
+
+.tabela-comparacao thead th:first-child {
+  width: 150px;
+  min-width: 150px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.tabela-comparacao thead th img {
+  display: block;
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  margin: 0 auto .35rem;
+  background: var(--tela);
+  border: 2px solid var(--moldura-luz-2);
+}
+
+.tabela-comparacao thead th strong {
+  display: block;
+  color: var(--texto);
+  font-family: var(--fonte-pixel);
+  font-size: .52rem;
+  line-height: 1.5;
+}
+
+/* Pokémon com o maior total de atributos: coluna destacada. */
+.tabela-comparacao thead th.comparacao-pokemon-melhor {
+  background: rgba(255, 204, 0, .12);
+  box-shadow: inset 0 -4px 0 var(--realce);
+}
+
+.tabela-comparacao thead th.comparacao-pokemon-melhor img {
+  border-color: var(--realce);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta), 0 0 0 2px var(--realce);
+}
+
+/* Selo "MELHOR" no cabeçalho do Pokémon com o maior total. */
+.comparacao-melhor-badge {
+  display: inline-block;
+  margin-top: .45rem;
+  padding: .25rem .4rem;
+  border: 2px solid var(--realce);
+  background: var(--realce);
+  color: var(--texto-tinta);
+  font-family: var(--fonte-pixel);
+  font-size: .42rem;
+  line-height: 1;
+}
+
+.comparacao-numero {
+  display: block;
+  margin-bottom: .25rem;
+  color: var(--texto-suave);
+  font-family: var(--fonte-pixel);
+  font-size: .45rem;
+}
+
+.comparacao-remover {
+  position: absolute;
+  top: .35rem;
+  right: .35rem;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border-width: 2px;
+  font-family: var(--fonte-texto);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.tabela-comparacao tbody th {
+  background: var(--painel-alto);
+}
+
+.tabela-comparacao tbody td {
+  text-align: center;
+  font-family: var(--fonte-pixel);
+  font-size: .65rem;
+  border-left: 2px solid var(--painel);
+}
+
+/* Cores dos valores: verde = maior da linha, vermelho = menor, branco = todos iguais. */
+.tabela-comparacao tbody td.comparacao-maior {
+  color: #40d14b;
+}
+
+.tabela-comparacao tbody td.comparacao-menor {
+  color: #ee4b34;
+}
+
+.tabela-comparacao tbody td.comparacao-igual {
+  color: #fff;
+}
+
+/* Moldura dourada em volta da coluna do melhor Pokémon. */
+.tabela-comparacao tbody td.comparacao-coluna-melhor {
+  background: rgba(255, 204, 0, .08);
+  box-shadow: inset 3px 0 0 var(--realce), inset -3px 0 0 var(--realce);
+}
+
+/* Última linha da tabela ("Total"), separada por uma borda mais grossa. */
+.tabela-comparacao tbody tr.comparacao-total th,
+.tabela-comparacao tbody tr.comparacao-total td {
+  border-top: 3px solid var(--moldura-luz);
+  font-weight: 700;
+}
+
+.tabela-comparacao tbody tr.comparacao-total td.comparacao-total-valor {
+  color: var(--texto);
+}
+
+.tabela-comparacao tbody tr.comparacao-total td.comparacao-coluna-melhor {
+  color: var(--realce);
+  font-size: .75rem;
+}
+
+/* Telas de até 640px: cabeçalho da comparação empilhado e botão em largura total. */
+@media (max-width: 640px) {
+  .cabecalho-comparacao {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .cabecalho-comparacao button {
+    width: 100%;
+  }
+
+  .estado-comparacao-vazio,
+  .tabela-comparacao {
+    padding: var(--espaco-md);
+  }
+}
+
+/* ==========================================================================
+   SEÇÃO 24 — FORMAS ESPECIAIS (Mega, Gigantamax e regionais)
+   Onde aparece: fileira "Outras formas", abaixo da cadeia evolutiva na tela de detalhes.
+   Nesta fileira as formas podem quebrar em várias linhas: não há ordem entre elas,
+   então não há seta para desenhar.
+   ========================================================================== */
+
+#bloco-variacoes {
+  margin-top: var(--espaco-md);
+  padding-top: var(--espaco-md);
+  border-top: 2px solid var(--moldura-luz-2);
+}
+
+#titulo-variacoes {
+  font-size: .6rem;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+  margin-bottom: var(--espaco-xs);
+}
+
+#lista-variacoes {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaco-xs);
+}
+
+.evo-forma-especial {
+  border-color: var(--fire);
+}
+
+.evo-forma-especial img {
+  border-color: var(--fire);
+}
+
+.evo-forma-especial:hover img {
+  border-color: var(--realce);
+}
+
+/* Etiqueta vermelha com o tipo de forma (MEGA, GIGANTAMAX...). */
+.forma-especial-badge {
+  display: inline-block;
+  margin-top: .15rem;
+  padding: .3rem .45rem;
+  background: var(--fire);
+  color: #fff;
+  border: 2px solid var(--moldura-tinta);
+  border-radius: var(--r-sm);
+  font-family: var(--fonte-pixel);
+  font-size: .42rem;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   SEÇÃO 25 — FICHA: ORGANIZAÇÃO EM BLOCOS (refinamentos)
+   Objetivo: organizar as seções da ficha em "cartões" e ajustar a linha evolutiva.
+   Como esta seção vem depois das anteriores, ela REFINA regras já definidas antes
+   (.estagio, .formas, .evo, #lista-variacoes...): a regra que aparece por último ganha.
+     - 860px ou mais: a ficha vira uma grade de 2 colunas;
+     - evolução e atributos ocupam a largura toda (grid-column: 1 / -1);
+     - menos de 860px: a ficha volta a ser uma coluna só.
+   ========================================================================== */
+
+@media (min-width: 860px) {
+  #conteudo > .ficha {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--espaco-md);
+  }
+
+  #conteudo > .ficha > #secao-evolucao,
+  #conteudo > .ficha > section:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Cada seção da ficha vira um cartão com fundo translúcido e moldura. */
+#conteudo > .ficha > section {
+  min-width: 0;
+  min-height: 150px;
+  height: auto;
+  align-self: start;
+  padding: var(--espaco-md);
+  background: rgba(14, 21, 38, .32);
+  border: 2px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+  display: flex;
+  flex-direction: column;
+}
+
+#conteudo > .ficha > section:not(#secao-evolucao):not(:last-child) {
+  min-height: 145px;
+}
+
+#conteudo > .ficha > section:not(#secao-evolucao):not(:last-child) .descricao-eficacia {
+  margin-bottom: var(--espaco-sm);
+}
+
+#conteudo > .ficha > section h2 {
+  margin-bottom: var(--espaco-sm);
+}
+
+#poke-tipos,
+#poke-habilidades {
+  min-height: 34px;
+  align-items: center;
+}
+
+#poke-habilidades li {
+  flex: 1 1 150px;
+  text-align: center;
+}
+
+/* Cadeia evolutiva centralizada. "safe center" centraliza sem esconder o começo da cadeia
+   quando ela é larga demais e precisa rolar para o lado. */
+#linha-evolucao {
+  width: 100%;
+  align-items: stretch;
+  gap: var(--espaco-md);
+  margin-top: var(--espaco-md);
+
+  justify-content: center;
+  justify-content: safe center;
+}
+
+/* Cada estágio vira uma caixa. flex: 0 1 auto = pede a largura do que tem dentro e só
+   encolhe se faltar espaço. */
+.estagio {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+  padding: var(--espaco-sm);
+  background: var(--tela);
+  border: 2px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+}
+
+/* Posiciona a seta entre um estágio e o próximo. */
+.estagio + .estagio::before {
+  position: absolute;
+  left: calc(var(--espaco-md) * -1);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+}
+
+/* Estágio com vários Pokémon (ex.: Eevee): eles ficam lado a lado numa grade.
+   repeat(auto-fit, minmax(118px, 1fr)) = quantas colunas de pelo menos 118px couberem. */
+.formas {
+  width: 100%;
+  max-width: none;
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  align-items: start;
+  justify-content: stretch;
+  gap: var(--espaco-xs);
+}
+
+.evo {
+  min-width: 0;
+  width: 100%;
+  padding: .45rem .35rem;
+  border-color: transparent;
+}
+
+.evo img {
+  width: 112px;
+  height: 112px;
+  max-width: 100%;
+}
+
+.evo .dex-numero,
+.evo .dex-nome,
+.forma-especial-badge {
+  text-align: center;
+}
+
+.evo .dex-numero {
+  font-size: .48rem;
+}
+
+.evo .dex-nome {
+  max-width: 100%;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.evo-requisito {
+  max-width: 100%;
+  font-size: .78rem;
+}
+
+.forma-especial-badge {
+  max-width: 100%;
+  margin-top: .1rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Fileira das variações: usa a mesma grade e a mesma moldura dos estágios de cima. */
+#lista-variacoes {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(118px, 140px));
+  justify-content: center;
+  gap: var(--espaco-xs);
+  padding: var(--espaco-sm);
+  background: var(--tela);
+  border: 2px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+}
+
+#lista-variacoes > li {
+  min-width: 0;
+  display: flex;
+}
+
+#conteudo > .ficha > section:last-child table {
+  margin-top: var(--espaco-xs);
+}
+
+/* Abaixo de 860px: a ficha volta a ser uma única coluna. */
+@media (max-width: 859px) {
+  #conteudo > .ficha {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espaco-md);
+  }
+}
+
+/* Celular (até 640px): cartões mais compactos e cada estágio da evolução ocupa a largura toda,
+   com a seta apontando para baixo. */
+@media (max-width: 640px) {
+  #conteudo > .ficha > section {
+    min-height: 140px;
+    height: auto;
+    align-self: stretch;
+    padding: var(--espaco-sm);
+  }
+
+  #conteudo > .ficha > section:not(#secao-evolucao):not(:last-child) {
+    min-height: 135px;
+  }
+
+  #linha-evolucao {
+    gap: var(--espaco-sm);
+  }
+
+  .estagio {
+    width: 100%;
+    flex: none;
+    padding: var(--espaco-xs);
+  }
+
+  .estagio + .estagio::before {
+    left: 50%;
+    top: calc(var(--espaco-sm) * -1);
+    transform: translate(-50%, -50%);
+  }
+
+  .formas {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+
+  #lista-variacoes {
+    grid-template-columns: repeat(auto-fit, minmax(110px, 132px));
+  }
+
+  .evo img {
+    width: 104px;
+    height: 104px;
+  }
+}
+
+/* ==========================================================================
+   SEÇÃO 26 — HISTÓRIA (texto do Pokémon)
+   Onde aparece: caixa "História" abaixo dos botões, na coluna esquerda da tela de detalhes.
+   ========================================================================== */
+
+.historia-pokemon {
+  margin-top: var(--espaco-sm);
+  padding: var(--espaco-md);
+  background: var(--tela);
+  border: 2px solid var(--moldura-luz-2);
+  border-radius: var(--r-sm);
+  box-shadow: inset 0 0 0 1px var(--moldura-tinta);
+}
+
+.historia-pokemon h2 {
+  margin: 0 0 var(--espaco-sm);
+  font-family: var(--fonte-pixel);
+  font-size: .9rem;
+}
+
+.historia-pokemon p {
+  margin: 0;
+  line-height: 1.65;
+}
+
+#historia-carregando,
+#historia-erro {
+  color: var(--cinza);
+  font-size: .9rem;
+}
+
+/* ==========================================================================
+   SEÇÃO 27 — SOBRE (página de apresentação do projeto)
+   Onde aparece: sobre-projeto.html — capa, texto de apresentação e atalhos finais.
+   ========================================================================== */
+
+.sobre-capa {
+  display: flex;
+  align-items: center;
+  gap: var(--espaco-md);
+  margin-bottom: var(--espaco-lg);
+  padding: var(--espaco-md);
+  background: var(--tela);
+  border: 3px solid var(--moldura-luz-2);
+  border-radius: var(--r);
+  box-shadow: inset 0 0 0 2px var(--moldura-tinta);
+}
+
+.sobre-capa-icone {
+  width: 62px;
+  height: 62px;
+  flex: none;
+  object-fit: contain;
+  border-radius: 50%;
+  clip-path: circle(48%);
+}
+
+.sobre-capa .titulo-pagina {
+  margin-bottom: var(--espaco-xs);
+}
+
+.sobre-linha-fina {
+  font-family: var(--fonte-pixel);
+  font-size: .6rem;
+  line-height: 1.8;
+  color: var(--texto-suave);
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0 var(--moldura-tinta);
+}
+
+.sobre-texto {
+  padding: var(--espaco-lg) var(--espaco-md);
+  background: var(--painel);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r);
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 3px var(--moldura-tinta);
+}
+
+.sobre-texto > p {
+  max-width: 43rem;
+  margin: 0 auto var(--espaco-md);
+  font-size: 1.08rem;
+  line-height: 1.85;
+  color: var(--texto);
+}
+
+/* Frase final: sem moldura, só a cor e o tamanho a destacam. O !important vence a regra
+   ".sobre-texto > p", que é mais específica. */
+.sobre-destaque {
+  margin-bottom: 0 !important;
+  font-size: 1.25rem !important;
+  color: var(--favorito);
+}
+
+.sobre-atalhos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--espaco-sm);
+  margin-top: var(--espaco-lg);
+}
+
+.sobre-atalhos a {
+  padding: .8rem 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  background: var(--painel);
+  color: var(--texto);
+  border: 3px solid var(--moldura-luz);
+  border-radius: var(--r-sm);
+  box-shadow:
+    inset 0 0 0 2px var(--moldura-tinta),
+    0 0 0 2px var(--moldura-tinta);
+  font-family: var(--fonte-pixel);
+  font-size: .58rem;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+  transition: var(--transicao);
+}
+
+.sobre-atalhos a:hover {
+  background: var(--painel-alto);
+  border-color: var(--realce);
+}
+
+.sobre-atalhos a:active {
+  background: var(--realce);
+  color: var(--texto-tinta);
+}
+
+@media (max-width: 640px) {
+  .sobre-capa {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .sobre-texto {
+    padding: var(--espaco-md);
+  }
+
+  .sobre-texto > p {
+    font-size: 1rem;
+  }
+
+  .sobre-destaque {
+    font-size: 1.12rem !important;
+  }
+
+  .sobre-atalhos {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240"
+     role="img" aria-labelledby="titulo descricao">
+
+    <title id="titulo">Grupo Optimus</title>
+    <desc id="descricao">Escudo hexagonal com um rosto de robo formado por placas metalicas separadas por vaos escuros: testa em chevron, asas laterais com ripas, olhos vermelhos em fenda, ponte central e queixo.</desc>
+
+    <!-- ============================================================
+         LOGO DO GRUPO OPTIMUS - versao mecha
+
+         Construida com a mesma GRAMATICA de uma insignia de robo
+         classica: o rosto nasce das placas claras e dos vaos escuros
+         entre elas, em vez de ser desenhado por cima de um fundo.
+
+         Os elementos e sua funcao:
+         - testa em chevron, acompanhando a ponta do escudo
+         - asas laterais com ripas, dando largura e leitura mecanica
+         - olhos em fenda inclinada para o centro (expressao)
+         - ponte central, separando os olhos e descendo ate o queixo
+         - malares e queixo, fechando a silhueta
+
+         Paleta do grupo, nao a da referencia:
+         #0E1B3F  azul Optimus (fundo e vaos entre as placas)
+         #DCE3EC  prata (placas do rosto)
+         #C8102E  vermelho (contorno do escudo)
+         #FF3B3B  vermelho claro (olhos)
+         ============================================================ -->
+
+    <defs>
+        <clipPath id="recorteEscudo">
+            <path d="M120 20 L212 72 L212 158 L120 220 L28 158 L28 72 Z"/>
+        </clipPath>
+    </defs>
+
+    <!-- Fundo do escudo. Os vaos escuros entre as placas sao esta cor
+         aparecendo por baixo - e o que desenha o rosto. -->
+    <g clip-path="url(#recorteEscudo)">
+        <rect width="240" height="240" fill="#0e1b3f"/>
+    </g>
+
+    <!-- Placas do rosto -->
+    <g fill="#dce3ec">
+
+        <!-- Testa em chevron: sobe ate quase o vertice do escudo e
+             desce num V no centro, abrindo espaco para a ponte. -->
+        <path d="M62 78 L120 44 L178 78 L178 92 L132 92 L120 106 L108 92 L62 92 Z"/>
+
+        <!-- Asas laterais -->
+        <path d="M56 100 L106 100 L106 120 L78 120 L56 110 Z"/>
+        <path d="M184 100 L134 100 L134 120 L162 120 L184 110 Z"/>
+
+        <!-- Malares -->
+        <path d="M74 152 L106 152 L106 188 L90 188 L74 164 Z"/>
+        <path d="M166 152 L134 152 L134 188 L150 188 L166 164 Z"/>
+
+        <!-- Ponte central, dos olhos ate acima do queixo -->
+        <path d="M112 116 L128 116 L128 170 L120 178 L112 170 Z"/>
+
+        <!-- Queixo -->
+        <path d="M106 182 L134 182 L128 202 L112 202 Z"/>
+
+    </g>
+
+    <!-- Ripas das asas: vaos escuros cortados por cima das placas -->
+    <g stroke="#0e1b3f" stroke-width="5" stroke-linecap="butt">
+        <line x1="64" y1="106" x2="100" y2="106"/>
+        <line x1="72" y1="113" x2="100" y2="113"/>
+        <line x1="176" y1="106" x2="140" y2="106"/>
+        <line x1="168" y1="113" x2="140" y2="113"/>
+    </g>
+
+    <!-- Olhos: aresta de cima descendo em direcao ao centro -->
+    <g fill="#ff3b3b">
+        <path d="M80 128 L110 134 L110 146 L80 140 Z"/>
+        <path d="M160 128 L130 134 L130 146 L160 140 Z"/>
+    </g>
+
+    <!-- Contorno do escudo, em vermelho: e ele que carrega a cor da
+         marca agora que a base vermelha saiu para o rosto caber. -->
+    <path d="M120 20 L212 72 L212 158 L120 220 L28 158 L28 72 Z"
+          fill="none" stroke="#c8102e" stroke-width="7"/>
+
+</svg>
