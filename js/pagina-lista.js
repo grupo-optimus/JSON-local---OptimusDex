@@ -1,42 +1,19 @@
-/* ==========================================================================
-   ARQUIVO: js/pagina-lista.js
-   OBJETIVO: controla a tela inicial (index.html): lista de Pokémon (RF001),
-             busca (RF002) e filtros.
-   TRÊS MODOS DE EXIBIÇÃO (um de cada vez):
-     1. Pokédex normal -> página por página, direto de dados-pokemon.js
-     2. Busca por nome ou número -> RF002
-     3. Filtro -> pokedex.js devolve os números que servem e a tela pagina em
-                  cima dessa lista, 20 por vez
-   ESTADO NA URL: a busca, os filtros e a página ficam no endereço
-   (?q=, ?tipo=, ?regiao=, ?categoria=, ?pagina=). Por isso o botão Voltar da
-   tela de detalhes consegue trazer a pessoa de volta para onde estava.
-   ========================================================================== */
-
-
-/* ==========================================================================
-   SEÇÃO 1 — REFERÊNCIAS AOS ELEMENTOS DO HTML
-   Cada constante guarda um elemento de index.html, buscado pelo seu id.
-   ========================================================================== */
-
-/* Estados da lista e área de resultados */
+/* SEÇÃO 1 — ELEMENTOS DO HTML: referências aos elementos da tela por id */
 const listaEl        = document.getElementById('lista-pokemons');
 const carregandoEl   = document.getElementById('estado-carregando');
 const erroEl         = document.getElementById('estado-erro');
 const mensagemErroEl = document.getElementById('mensagem-erro');
 const vazioEl        = document.getElementById('sem-resultado');
 
-/* Paginação */
 const paginacaoEl    = document.getElementById('paginacao');
 const infoPaginaEl   = document.getElementById('info-pagina');
 const botaoAnterior  = document.getElementById('btn-anterior');
 const botaoProxima   = document.getElementById('btn-proxima');
 
-/* Busca e botão "Tentar novamente" */
 const formBusca      = document.getElementById('form-busca');
 const campoBusca     = document.getElementById('busca');
 const botaoTentar    = document.getElementById('btn-tentar');
 
-/* Painel de filtros */
 const botaoFiltros   = document.getElementById('btn-filtros');
 const painelFiltros  = document.getElementById('painel-filtros');
 const caixaTipos     = document.getElementById('filtro-tipos');
@@ -46,25 +23,14 @@ const avisoFiltroEl  = document.getElementById('aviso-filtro');
 const botaoAplicar   = document.getElementById('btn-aplicar-filtros');
 const botaoLimpar    = document.getElementById('btn-limpar-filtros');
 
+/* SEÇÃO 2 — VARIÁVEIS DE ESTADO: página, busca, filtros e última ação */
+let paginaAtual = 1;
+let termoAtual = '';
+let filtros = { tipos: [], regiao: null, categoria: null };
+let idsFiltrados = null;
+let ultimaAcao = null;
 
-/* ==========================================================================
-   SEÇÃO 2 — VARIÁVEIS DE ESTADO
-   Guardam "como a tela está agora".
-   ========================================================================== */
-let paginaAtual = 1;                                       /* página em exibição */
-let termoAtual = '';                                       /* texto da busca atual */
-let filtros = { tipos: [], regiao: null, categoria: null };/* filtros marcados */
-let idsFiltrados = null;  /* lista de números que passaram no filtro; null = sem filtro */
-let ultimaAcao = null;    /* última ação feita; o botão "Tentar novamente" repete ela (RF007) */
-
-
-/* ==========================================================================
-   SEÇÃO 3 — ESTADOS DA TELA E DESENHO DA LISTA
-   ========================================================================== */
-
-/* Liga um estado da tela e desliga os outros: 'carregando', 'erro', 'vazio' ou
-   'pronto'. A paginação só aparece quando está pronto e não há busca por texto.
-   Se vier uma mensagem, ela é escrita na área de erro. */
+/* SEÇÃO 3 — ESTADOS E LISTA: estados da tela, desenho dos cards e verificação de filtro */
 function definirEstado(estado, mensagem) {
   mostrar(carregandoEl, estado === 'carregando');
   mostrar(erroEl,       estado === 'erro');
@@ -74,30 +40,17 @@ function definirEstado(estado, mensagem) {
   if (mensagem) mensagemErroEl.textContent = mensagem;
 }
 
-/* Apaga a lista atual e desenha um card para cada Pokémon recebido.
-   Cada card já vem com a estrela de favoritar (RF004). */
 function desenharLista(pokemons) {
   listaEl.replaceChildren();
   pokemons.forEach(p => listaEl.appendChild(criarCardPokemon(p, { comBotaoFavorito: true })));
   atualizarLinksComparacao();
 }
 
-/* Diz (true/false) se existe algum filtro marcado. */
 function temFiltro() {
   return filtros.tipos.length > 0 || filtros.regiao !== null || filtros.categoria !== null;
 }
 
-
-/* ==========================================================================
-   SEÇÃO 4 — ESTADO NA URL
-   Objetivo: manter o endereço da página sempre igual ao estado da tela.
-   ========================================================================== */
-
-/* Escreve o estado atual (busca, filtros e página) no endereço.
-   replaceState troca o endereço SEM recarregar a página e SEM criar uma nova
-   entrada no histórico; assim, passar por 5 páginas não obriga a apertar
-   "voltar" 5 vezes.
-   No final, anota o endereço para o botão Voltar da tela de detalhes. */
+/* SEÇÃO 4 — ESTADO NA URL: escrever e ler busca, filtros e página no endereço */
 function sincronizarURL() {
   const partes = new URLSearchParams();
 
@@ -113,8 +66,6 @@ function sincronizarURL() {
   guardarUltimaLista(window.location.href);
 }
 
-/* Faz o caminho inverso: lê o endereço e preenche as variáveis de estado.
-   Roda quando a página abre, para restaurar busca, filtros e página. */
 function lerURL() {
   const partes = new URLSearchParams(window.location.search);
 
@@ -125,18 +76,7 @@ function lerURL() {
   paginaAtual       = Math.max(1, Number(partes.get('pagina')) || 1);
 }
 
-
-/* ==========================================================================
-   SEÇÃO 5 — CARREGAR UMA PÁGINA DA LISTA
-   Serve para os dois modos com paginação: Pokédex inteira e resultado de filtro.
-   ========================================================================== */
-
-/* Carrega e desenha uma página.
-   - Com filtro ativo: fatia 20 números da lista idsFiltrados e busca só esses.
-   - Sem filtro: pede a página direto para listarPagina().
-   Depois atualiza o texto "Página X de Y", habilita ou desabilita os botões
-   Anterior/Próxima, atualiza a URL e mostra a lista. Se algo falhar, mostra o
-   estado de erro (RF007). */
+/* SEÇÃO 5 — CARREGAR PÁGINA: carregarPagina com ou sem filtro */
 async function carregarPagina(pagina) {
   ultimaAcao = () => carregarPagina(pagina);
   definirEstado('carregando');
@@ -169,17 +109,7 @@ async function carregarPagina(pagina) {
   }
 }
 
-
-/* ==========================================================================
-   SEÇÃO 6 — BUSCA (RF002)
-   ========================================================================== */
-
-/* Faz a busca por nome ou número.
-   Buscar e filtrar são modos diferentes, então buscar LIMPA os filtros (senão a
-   tela mostraria um resultado que não bate com os botões marcados).
-   - Nenhum resultado: mostra "Nenhum Pokémon encontrado".
-   - Número que não existe: também cai como "não encontrado", e não como erro.
-   - Outro erro: mostra o estado de erro. */
+/* SEÇÃO 6 — BUSCA: fazerBusca por nome ou número */
 async function fazerBusca(termo) {
   ultimaAcao = () => fazerBusca(termo);
 
@@ -211,17 +141,7 @@ async function fazerBusca(termo) {
   }
 }
 
-
-/* ==========================================================================
-   SEÇÃO 7 — FILTROS: BOTÕES (CHIPS)
-   ========================================================================== */
-
-/* Cria um botão de filtro ("chip").
-     grupo   a que grupo pertence: 'tipo', 'regiao' ou 'categoria';
-     valor   o valor guardado no botão (ex.: 'fire', 1, 'lendario');
-     rotulo  o texto exibido (ex.: 'Fogo').
-   Os chips de tipo recebem data-tipo, o mesmo atributo das plaquinhas dos
-   cards, para o CSS pintar cada tipo com a sua cor. */
+/* SEÇÃO 7 — FILTROS: CHIPS: criar, marcar e pintar os botões de filtro */
 function criarChip(grupo, valor, rotulo) {
   const chip = elemento('button', rotulo);
   chip.type = 'button';
@@ -235,9 +155,6 @@ function criarChip(grupo, valor, rotulo) {
   return chip;
 }
 
-/* Cria todos os chips a partir dos dicionários (TIPOS_PT, REGIOES e CATEGORIAS).
-   Assim, se alguém adicionar um tipo em traducoes.js, ele aparece aqui sozinho.
-   'unknown' e 'stellar' ficam de fora porque não têm Pokémon útil. */
 function montarChips() {
   Object.keys(TIPOS_PT)
     .filter(chave => chave !== 'unknown' && chave !== 'stellar')
@@ -248,17 +165,10 @@ function montarChips() {
   CATEGORIAS.forEach(c => caixaCategorias.appendChild(criarChip('categoria', c.chave, c.nome)));
 }
 
-/* Diz se a categoria é uma forma alternativa (Mega ou Gigantamax). */
 function ehFormaAlternativa(categoria) {
   return categoria === 'mega' || categoria === 'gmax';
 }
 
-/* Marca ou desmarca um chip, atualizando o objeto "filtros".
-   - Tipo: aceita vários ao mesmo tempo (Fogo + Voador acha o Charizard).
-   - Região e categoria: aceitam só um; clicar de novo no mesmo desmarca.
-   - Mega/Gigantamax e região são exclusivos: formas Mega/Gmax têm número acima
-     de 10000 e nunca estão na faixa de uma região. Marcar os dois daria sempre
-     lista vazia, então marcar um desmarca o outro. */
 function alternarChip(grupo, valor) {
   if (grupo === 'tipo') {
     const i = filtros.tipos.indexOf(valor);
@@ -283,9 +193,6 @@ function alternarChip(grupo, valor) {
   pintarChips();
 }
 
-/* Repinta os chips a partir do objeto "filtros" (o estado manda; o visual
-   apenas obedece). O atributo aria-pressed é o que o CSS usa para destacar o
-   chip marcado. Também mostra o aviso de Mega/Gigantamax quando necessário. */
 function pintarChips() {
   painelFiltros.querySelectorAll('.chip').forEach(function (chip) {
     const valor = chip.dataset.valor;
@@ -301,14 +208,7 @@ function pintarChips() {
   mostrar(avisoFiltroEl, ehFormaAlternativa(filtros.categoria));
 }
 
-
-/* ==========================================================================
-   SEÇÃO 8 — FILTROS: APLICAR E LIMPAR
-   ========================================================================== */
-
-/* Aplica os filtros marcados e mostra o resultado a partir da página informada.
-   Filtrar LIMPA a busca (mesmo motivo de buscar limpar o filtro).
-   Se nenhum Pokémon passar no filtro, mostra o estado "vazio". */
+/* SEÇÃO 8 — FILTROS: APLICAR E LIMPAR: aplicarFiltros e limparFiltros */
 async function aplicarFiltros(pagina) {
   ultimaAcao = () => aplicarFiltros(pagina);
 
@@ -332,7 +232,6 @@ async function aplicarFiltros(pagina) {
   }
 }
 
-/* Desmarca todos os filtros e volta para a Pokédex normal, na página 1. */
 function limparFiltros() {
   filtros = { tipos: [], regiao: null, categoria: null };
   idsFiltrados = null;
@@ -340,16 +239,7 @@ function limparFiltros() {
   carregarPagina(1);
 }
 
-
-/* ==========================================================================
-   SEÇÃO 9 — EVENTOS (o que acontece quando o usuário clica ou envia o formulário)
-   ========================================================================== */
-
-/* Envio do formulário de busca. preventDefault impede o recarregamento da
-   página; quem busca é o JavaScript.
-   - Com texto: faz a busca.
-   - Campo vazio: volta ao que estiver valendo (o filtro, se houver; senão a
-     Pokédex normal). */
+/* SEÇÃO 9 — EVENTOS: cliques e envio do formulário */
 formBusca.addEventListener('submit', function (evento) {
   evento.preventDefault();
   const termo = campoBusca.value.trim();
@@ -364,30 +254,20 @@ formBusca.addEventListener('submit', function (evento) {
   else { idsFiltrados = null; carregarPagina(1); }
 });
 
-/* Botão "Filtros": abre e fecha o painel de filtros. */
 botaoFiltros.addEventListener('click', function () {
   const vaiAbrir = painelFiltros.hidden;
   painelFiltros.hidden = !vaiAbrir;
   botaoFiltros.setAttribute('aria-expanded', String(vaiAbrir));
 });
 
-/* Botões do painel de filtros. */
 botaoAplicar.addEventListener('click', () => aplicarFiltros(1));
 botaoLimpar.addEventListener('click', limparFiltros);
 
-/* Botões de paginação e "Tentar novamente" (repete a última ação que falhou). */
 botaoAnterior.addEventListener('click', () => carregarPagina(paginaAtual - 1));
 botaoProxima.addEventListener('click', () => carregarPagina(paginaAtual + 1));
 botaoTentar.addEventListener('click', () => { if (ultimaAcao) ultimaAcao(); });
 
-
-/* ==========================================================================
-   SEÇÃO 10 — INICIALIZAÇÃO (o que roda quando a tela abre)
-   Lê a URL, cria os chips e obedece o que estiver no endereço:
-   - com busca na URL: refaz a busca;
-   - com filtro na URL: abre o painel de filtros e reaplica;
-   - sem nada: mostra a Pokédex normal na página 1.
-   ========================================================================== */
+/* SEÇÃO 10 — INICIALIZAÇÃO: restaura o estado da URL ao abrir a tela */
 lerURL();
 montarChips();
 pintarChips();

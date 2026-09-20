@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 
-<!-- TELA 5 — SOBRE O PROJETO (sobre-projeto.html)
-     Página estática: só apresenta o projeto. Não lê dados de Pokémon.
-     O único JavaScript daqui atualiza o contador "Comparar (n/6)" no topo. -->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
 
-  <!-- Faz o site se ajustar a telas pequenas, como celulares. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sobre o projeto — OptimusDex</title>
 
-  <!-- Descrição da página (usada por buscadores como o Google). -->
   <meta name="description"
         content="O OptimusDex é uma Pokédex feita por fãs para fãs: explore, favorite e compare até 6 Pokémon lado a lado.">
 
-  <!-- Ícone da aba e arquivo de estilos (todo o visual está em css/style.css). -->
   <link rel="icon" href="img/pokeicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação.
-       O link "◀ Pokédex" (id btn-voltar) volta para a lista no estado em que ela estava (ligado em ui.js). -->
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -37,10 +30,9 @@
     </nav>
   </header>
 
-  <!-- SEÇÃO 2 — ÁREA PRINCIPAL. -->
+  <!-- SEÇÃO 2 — CONTEÚDO: capa, texto de apresentação e atalhos -->
   <main>
 
-    <!-- Capa: ícone, título e frase de destaque. -->
     <section class="sobre-capa">
       <img src="img/pokeicon.png" alt="" class="sobre-capa-icone">
       <div>
@@ -49,7 +41,6 @@
       </div>
     </section>
 
-    <!-- Texto de apresentação do projeto. -->
     <article class="sobre-texto">
 
       <p>
@@ -78,7 +69,6 @@
 
     </article>
 
-    <!-- Atalhos: a página termina apontando para as três telas que o texto cita. -->
     <nav class="sobre-atalhos" aria-label="Atalhos do projeto">
       <a href="index.html">Explorar a Pokédex</a>
       <a href="favoritos.html">Meus Favoritos</a>
@@ -87,8 +77,7 @@
 
   </main>
 
-  <!-- RODAPÉ: apresentação do projeto e links úteis (Sobre o projeto, GitHub, Grupo Optimus).
-       É igual em todas as páginas. Estilo: classes .site-footer e .footer-* em css/style.css. -->
+  <!-- SEÇÃO 3 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -136,8 +125,7 @@
     </div>
   </footer>
 
-  <!-- SEÇÃO 3 — SCRIPTS. Sem pokedex.js: esta tela não mostra Pokémon.
-       comparacao.js + ui.js servem só para manter o contador do topo igual ao das outras telas. -->
+  <!-- SEÇÃO 4 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/comparacao.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/pagina-sobre.js"></script>

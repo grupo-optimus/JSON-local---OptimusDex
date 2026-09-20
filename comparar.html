@@ -1,22 +1,17 @@
 <!DOCTYPE html>
 
-<!-- TELA 4 — COMPARAÇÃO DE POKÉMON (comparar.html)
-     Objetivo: comparar de 2 a 6 Pokémon lado a lado pelos seis atributos-base.
-     A tabela é criada pelo JavaScript (js/pagina-comparacao.js). -->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Comparar Pokémon — OptimusDex</title>
 
-  <!-- Ícone da aba e arquivo de estilos (todo o visual está em css/style.css). -->
   <link rel="icon" href="img/pokeicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação.
-       O link "◀ Pokédex" (id btn-voltar) volta para a lista no estado em que ela estava (ligado em ui.js). -->
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -30,10 +25,9 @@
     </nav>
   </header>
 
-  <!-- SEÇÃO 2 — ÁREA PRINCIPAL. -->
+  <!-- SEÇÃO 2 — COMPARAÇÃO: título, mensagens de estado e tabela -->
   <main>
 
-    <!-- Título da página e botão para limpar a comparação (o botão só aparece se houver Pokémon escolhidos). -->
     <section class="cabecalho-comparacao">
       <div>
         <h2>Comparação de Pokémon</h2>
@@ -42,24 +36,19 @@
       <button type="button" id="btn-limpar-comparacao">Limpar comparação</button>
     </section>
 
-    <!-- Estado: carregando a comparação. -->
     <p id="estado-carregando-comparacao" hidden>Carregando comparação…</p>
 
-    <!-- Estado: erro ao carregar a comparação. -->
     <section id="estado-erro-comparacao" hidden>
       <h2>Deu ruim</h2>
       <p id="mensagem-erro-comparacao">Não foi possível carregar a comparação.</p>
     </section>
 
-    <!-- Estado: menos de 2 Pokémon escolhidos. Explica como adicionar e leva de volta para a Pokédex. -->
     <section id="estado-vazio-comparacao" class="estado-comparacao-vazio">
       <h2>Selecione Pokémon para comparar</h2>
       <p>Adicione pelo menos 2 Pokémon usando o botão “Comparar” nos cards ou na tela de detalhes.</p>
       <a class="botao-comparacao-link" href="index.html">Voltar para a Pokédex</a>
     </section>
 
-    <!-- Tabela de comparação. Cabeçalho e linhas são criados pelo JavaScript.
-         A div com scroll permite rolar a tabela para o lado em telas pequenas. -->
     <section id="tabela-comparacao" class="tabela-comparacao" hidden aria-labelledby="titulo-tabela-comparacao">
       <h2 id="titulo-tabela-comparacao">Atributos-base</h2>
       <div class="tabela-comparacao-scroll">
@@ -73,8 +62,7 @@
     </section>
   </main>
 
-  <!-- RODAPÉ: apresentação do projeto e links úteis (Sobre o projeto, GitHub, Grupo Optimus).
-       É igual em todas as páginas. Estilo: classes .site-footer e .footer-* em css/style.css. -->
+  <!-- SEÇÃO 3 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
       <div class="footer-brand">
@@ -108,7 +96,7 @@
     </div>
   </footer>
 
-  <!-- SEÇÃO 3 — SCRIPTS. A ORDEM IMPORTA: dicionários e dados primeiro, controlador da tela por último. -->
+  <!-- SEÇÃO 4 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/traducoes.js"></script>
   <script src="js/dados-pokemon.js"></script>
   <script src="js/pokedex.js"></script>

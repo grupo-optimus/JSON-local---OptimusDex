@@ -1,14 +1,4 @@
-/* ==========================================================================
-   ARQUIVO: js/pagina-comparacao.js
-   OBJETIVO: controla a tela de comparação (comparar.html): compara de 2 a 6
-             Pokémon lado a lado pelos seis atributos-base.
-   O destaque de "MELHOR" considera a SOMA dos seis atributos de cada Pokémon.
-   ========================================================================== */
-
-
-/* ==========================================================================
-   SEÇÃO 1 — REFERÊNCIAS AOS ELEMENTOS DO HTML
-   ========================================================================== */
+/* SEÇÃO 1 — ELEMENTOS DO HTML: referências aos elementos da tela por id */
 const estadoCarregandoEl = document.getElementById('estado-carregando-comparacao');
 const estadoErroEl = document.getElementById('estado-erro-comparacao');
 const mensagemErroEl = document.getElementById('mensagem-erro-comparacao');
@@ -18,14 +8,7 @@ const cabecalhoEl = document.getElementById('cabecalho-comparacao');
 const corpoEl = document.getElementById('corpo-comparacao');
 const botaoLimparEl = document.getElementById('btn-limpar-comparacao');
 
-
-/* ==========================================================================
-   SEÇÃO 2 — ESTADOS DA TELA
-   ========================================================================== */
-
-/* Liga um estado da tela e desliga os outros: 'carregando', 'erro', 'vazio' ou
-   'pronto' (tabela). O botão "Limpar comparação" só aparece se houver algum
-   Pokémon selecionado. */
+/* SEÇÃO 2 — ESTADOS DA TELA: carregando, erro, vazio e pronto */
 function estadoComparacao(estado, mensagem) {
   mostrar(estadoCarregandoEl, estado === 'carregando');
   mostrar(estadoErroEl, estado === 'erro');
@@ -35,32 +18,17 @@ function estadoComparacao(estado, mensagem) {
   if (mensagem) mensagemErroEl.textContent = mensagem;
 }
 
-
-/* ==========================================================================
-   SEÇÃO 3 — CÁLCULOS
-   ========================================================================== */
-
-/* Soma os seis atributos-base de um Pokémon. */
+/* SEÇÃO 3 — CÁLCULOS: total de atributos e classe de cor das células */
 function totalAtributos(pokemon) {
   return pokemon.atributos.reduce((total, atributo) => total + Number(atributo.valor || 0), 0);
 }
 
-/* Decide a classe (cor) de uma célula da tabela:
-   - todos iguais -> 'comparacao-igual';
-   - maior valor da linha -> 'comparacao-maior';
-   - os demais -> 'comparacao-menor'. */
 function classeComparacao(valor, melhor, pior) {
   if (melhor === pior) return 'comparacao-igual';
   return valor === melhor ? 'comparacao-maior' : 'comparacao-menor';
 }
 
-
-/* ==========================================================================
-   SEÇÃO 4 — MONTAR A TABELA
-   ========================================================================== */
-
-/* Cria a célula de cabeçalho de UM Pokémon: imagem, número, nome, selo "MELHOR"
-   (se tiver o maior total) e botão "×" para removê-lo da comparação. */
+/* SEÇÃO 4 — MONTAR A TABELA: cabeçalho de cada Pokémon e tabela completa */
 function criarCabecalhoPokemon(pokemon, ehMelhor) {
   const th = elemento('th');
   th.scope = 'col';
@@ -106,12 +74,6 @@ function criarCabecalhoPokemon(pokemon, ehMelhor) {
   return th;
 }
 
-/* Monta a tabela completa a partir da lista de Pokémon:
-   1. cabeçalho: uma coluna "Atributo" + uma coluna por Pokémon;
-   2. uma linha para cada um dos seis atributos, com o maior valor em destaque
-      (verde), o menor (vermelho) e, se todos forem iguais, cor neutra;
-   3. a última linha "Total" com a soma dos atributos.
-   A coluna do Pokémon com maior total recebe destaque extra. */
 function desenharComparacao(pokemons) {
   cabecalhoEl.replaceChildren();
   corpoEl.replaceChildren();
@@ -172,15 +134,7 @@ function desenharComparacao(pokemons) {
   corpoEl.appendChild(linhaTotal);
 }
 
-
-/* ==========================================================================
-   SEÇÃO 5 — CARREGAR A COMPARAÇÃO
-   ========================================================================== */
-
-/* Lê os ids selecionados, busca cada Pokémon e desenha a tabela.
-   - Menos de 2 Pokémon selecionados: mostra o estado "vazio" (precisa de pelo
-     menos 2 para comparar).
-   - Se algo falhar: mostra o estado de erro. */
+/* SEÇÃO 5 — CARREGAR A COMPARAÇÃO: lê os ids, busca os Pokémon e desenha a tabela */
 async function carregarComparacao() {
   const ids = lerComparacao();
 
@@ -200,16 +154,10 @@ async function carregarComparacao() {
   }
 }
 
-
-/* ==========================================================================
-   SEÇÃO 6 — EVENTOS E INICIALIZAÇÃO
-   ========================================================================== */
-
-/* Botão "Limpar comparação": esvazia a seleção e redesenha a tela. */
+/* SEÇÃO 6 — EVENTOS E INICIALIZAÇÃO: botão de limpar e primeira carga */
 botaoLimparEl.addEventListener('click', function () {
   limparComparacao();
   carregarComparacao();
 });
 
-/* Ao abrir a página, já carrega a comparação atual. */
 carregarComparacao();

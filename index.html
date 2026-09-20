@@ -1,26 +1,18 @@
 <!DOCTYPE html>
 
-<!-- TELA 1 — PÁGINA INICIAL (index.html)
-     Objetivo: listar os Pokémon com paginação (RF001), buscar por nome ou número (RF002)
-     e filtrar por tipo, região e categoria.
-     O HTML é só a "casca" vazia: quem preenche a lista é o JavaScript (js/pagina-lista.js),
-     usando os dados de js/dados-pokemon.js. -->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
 
-  <!-- Faz o site se ajustar a telas pequenas, como celulares (RNF002). -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OptimusDex</title>
 
-  <!-- Ícone da aba e arquivo de estilos (todo o visual está em css/style.css). -->
   <link rel="icon" href="img/pokeicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- SEÇÃO 1 — CABEÇALHO: logo (link para a página inicial) e menu de navegação.
-       O contador "Comparar (0/6)" tem o texto atualizado pelo JavaScript (ui.js) com a quantidade escolhida. -->
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -34,9 +26,7 @@
     </nav>
   </header>
 
-  <!-- SEÇÃO 2 — BUSCA (RF002): campo de texto e botões Buscar e Filtros.
-       O formulário não recarrega a página: o JavaScript intercepta o envio e faz a busca.
-       O botão .btn-limpar-busca é o "X" que apaga o texto digitado (ligado em ui.js). -->
+  <!-- SEÇÃO 2 — BUSCA: campo de busca e botões Buscar e Filtros -->
   <section>
     <form id="form-busca" role="search">
       <label for="busca">Nome ou número da Pokédex:</label>
@@ -50,9 +40,7 @@
               aria-expanded="false" aria-controls="painel-filtros">Filtros</button>
     </form>
 
-    <!-- SEÇÃO 3 — PAINEL DE FILTROS (começa escondido; o botão "Filtros" abre e fecha).
-         Os botões de cada grupo NÃO estão escritos aqui: o JavaScript os cria a partir dos
-         dicionários (traducoes.js e dados-filtro.js), para nunca ficarem fora de sincronia. -->
+    <!-- SEÇÃO 3 — FILTROS: painel com tipo, região e categoria -->
     <div id="painel-filtros" hidden>
 
       <fieldset>
@@ -70,12 +58,10 @@
         <div class="chips" id="filtro-categorias"></div>
       </fieldset>
 
-      <!-- Aviso que aparece só quando a categoria Mega ou Gigantamax está marcada. -->
       <p id="aviso-filtro" hidden>
         Mega e Gigantamax são formas alternativas: elas não entram no filtro de região.
       </p>
 
-      <!-- Botões que limpam ou aplicam os filtros marcados. -->
       <div class="filtros-acoes">
         <button type="button" id="btn-limpar-filtros">Limpar</button>
         <button type="button" id="btn-aplicar-filtros">Aplicar</button>
@@ -84,27 +70,21 @@
     </div>
   </section>
 
-  <!-- SEÇÃO 4 — ÁREA PRINCIPAL: resultados da lista.
-       Os elementos abaixo são "estados" da tela: o JavaScript mostra um de cada vez (atributo hidden). -->
+  <!-- SEÇÃO 4 — RESULTADOS: mensagens de estado, lista de cards e paginação -->
   <main>
 
-    <!-- Estado: a lista ainda está sendo carregada. -->
     <p id="estado-carregando">Carregando Pokémons…</p>
 
-    <!-- Estado: erro ao carregar (RF007). Mostra a mensagem e o botão "Tentar novamente". -->
     <section id="estado-erro" hidden>
       <h2>Deu ruim</h2>
       <p id="mensagem-erro">Não foi possível carregar os Pokémons.</p>
       <button type="button" id="btn-tentar">Tentar novamente</button>
     </section>
 
-    <!-- Estado: a busca ou o filtro não encontrou nenhum Pokémon. -->
     <p id="sem-resultado" hidden>Nenhum Pokémon encontrado com esse nome ou número.</p>
 
-    <!-- Lista de cards. Cada card (número, nome, imagem e tipos) é criado pelo JavaScript. -->
     <ul id="lista-pokemons" hidden></ul>
 
-    <!-- Paginação (RF001): a Pokédex é mostrada em blocos de 20 Pokémon por página. -->
     <nav id="paginacao" aria-label="Paginação" hidden>
       <button type="button" id="btn-anterior">&#9664; Anterior</button>
       <span id="info-pagina"></span>
@@ -113,8 +93,7 @@
 
   </main>
 
-  <!-- RODAPÉ: apresentação do projeto e links úteis (Sobre o projeto, GitHub, Grupo Optimus).
-       É igual em todas as páginas. Estilo: classes .site-footer e .footer-* em css/style.css. -->
+  <!-- SEÇÃO 5 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -162,10 +141,7 @@
     </div>
   </footer>
 
-  <!-- SEÇÃO 5 — SCRIPTS. A ORDEM IMPORTA: cada arquivo usa o que foi definido nos anteriores.
-       traducoes.js (tradutor de tipos) -> dados-filtro.js (regiões e categorias) -> dados-pokemon.js (os dados)
-       -> pokedex.js (busca, filtros e contas) -> favoritos.js e comparacao.js (armazenamento) -> ui.js (peças de tela)
-       -> pagina-lista.js (controla esta tela; por isso vem por último). -->
+  <!-- SEÇÃO 6 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/traducoes.js"></script>
   <script src="js/dados-filtro.js"></script>
   <script src="js/dados-pokemon.js"></script>

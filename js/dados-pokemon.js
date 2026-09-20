@@ -1,29 +1,4 @@
-/* ==========================================================================
-   ARQUIVO: js/dados-pokemon.js
-   OBJETIVO: é o "banco de dados" do projeto. Todos os Pokémon e a tabela de
-             efetividade de tipos estão escritos aqui, direto no código.
-             Não existe nenhum pedido de rede (não há API).
-   USADO POR: pokedex.js, que transforma estes dados no que as telas usam.
-
-   Como adicionar um Pokémon: acrescente um bloco em POKEMONS e coloque os dois
-   sprites em img/pokemon/NUMERO.png e img/pokemon/shiny/NUMERO.png.
-   ========================================================================== */
-
-
-/* ==========================================================================
-   SEÇÃO 1 — LISTA DE POKÉMON
-   Cada Pokémon é um objeto com os campos abaixo:
-     id          número da Pokédex Nacional
-     chave       nome em minúsculo e sem espaço; serve como identificador
-     nome        como aparece na tela
-     tipos       chaves de TIPOS_PT (traducoes.js), na ordem oficial
-     habilidades lista de habilidades (já em português)
-     atributos   os seis atributos-base (hp, ataque, defesa, ...)
-     familia     Pokémon com a mesma família formam a linha evolutiva
-     estagio     1 = forma inicial, 2 = primeira evolução, 3 = segunda
-     requisito   (opcional) o que fazer para chegar neste estágio
-     historia    texto da entrada da Pokédex
-   ========================================================================== */
+/* SEÇÃO 1 — LISTA DE POKÉMON: array POKEMONS com os dados de cada Pokémon */
 const POKEMONS = [
   {
     id: 1,
@@ -75,17 +50,7 @@ const POKEMONS = [
   }
 ];
 
-
-/* ==========================================================================
-   SEÇÃO 2 — TABELA DE EFETIVIDADE DE TIPOS
-   Como ler: a chave de fora é o tipo do GOLPE (atacante); a chave de dentro é o
-   tipo de quem LEVE o golpe (defensor).
-   Só aparecem os casos diferentes do normal (1x):
-     2   = super efetivo
-     0.5 = pouco efetivo
-     0   = não faz efeito
-   Quem usa: efetividadeContra() e obterVantagensEFraquezas() em pokedex.js.
-   ========================================================================== */
+/* SEÇÃO 2 — EFETIVIDADE DE TIPOS: tabela de multiplicadores de dano entre os tipos */
 const EFETIVIDADE = {
   normal:   { rock: 0.5, ghost: 0, steel: 0.5 },
   fire:     { fire: 0.5, water: 0.5, grass: 2, ice: 2, bug: 2, rock: 0.5, dragon: 0.5, steel: 2 },

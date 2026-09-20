@@ -1,25 +1,18 @@
 <!DOCTYPE html>
 
-<!-- TELA 2 — DETALHES DO POKÉMON (detalhes.html)
-     Objetivo: mostrar a ficha completa de um Pokémon (RF003) e permitir favoritar (RF004) e comparar.
-     Qual Pokémon aparece? O número que vier no endereço: detalhes.html?id=4.
-     O HTML é só a "casca" vazia: o JavaScript (js/pagina-detalhes.js) preenche os dados. -->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
 
-  <!-- Faz o site se ajustar a telas pequenas, como celulares. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detalhes do Pokémon</title>
 
-  <!-- Ícone da aba e arquivo de estilos (todo o visual está em css/style.css). -->
   <link rel="icon" href="img/pokeicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação.
-       O link "◀ Pokédex" (id btn-voltar) volta para a lista no estado em que ela estava (ligado em ui.js). -->
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -34,28 +27,24 @@
     </nav>
   </header>
 
-  <!-- SEÇÃO 2 — ÁREA PRINCIPAL. -->
+  <!-- SEÇÃO 2 — PRINCIPAL: título e mensagens de carregando e erro -->
   <main>
 
     <h2 class="titulo-pagina">Detalhes do Pokémon</h2>
 
-    <!-- Estado: esperando os dados do Pokémon. -->
     <p id="estado-carregando">Carregando…</p>
 
-    <!-- Estado: erro (RF007). Um número de Pokémon inexistente também cai aqui. -->
     <section id="estado-erro" hidden>
       <h2>Deu ruim</h2>
       <p id="mensagem-erro">Não foi possível carregar este Pokémon.</p>
       <button type="button" id="btn-tentar">Tentar novamente</button>
     </section>
 
-    <!-- SEÇÃO 3 — O POKÉMON: casca vazia que o JavaScript preenche. Fica escondida até os dados chegarem. -->
+    <!-- SEÇÃO 3 — FICHA DO POKÉMON: visor (imagem, botões, história) e ficha (tipos, habilidades, efetividade, evolução, atributos) -->
     <div id="conteudo" hidden>
 
-      <!-- COLUNA DA ESQUERDA (visor): imagem grande, nome, número, botões e história. -->
       <div class="visor">
 
-        <!-- Imagem e identificação do Pokémon (preenchidas pelo JavaScript). -->
         <figure>
           <img id="poke-imagem" src="" alt="" width="200" height="200">
           <figcaption>
@@ -64,15 +53,11 @@
           </figcaption>
         </figure>
 
-        <!-- Botão que troca o desenho normal pelo shiny (a cor rara do Pokémon). -->
         <button type="button" id="btn-shiny" aria-pressed="false">Ver shiny</button>
 
-        <!-- Botão de favoritar: o mesmo botão adiciona e remove (RF004). O texto muda sozinho.
-             O botão seguinte adiciona ou remove o Pokémon da comparação. -->
         <button type="button" id="btn-favorito" aria-pressed="false">☆ Adicionar aos favoritos</button>
         <button type="button" id="btn-comparar" aria-pressed="false">+ Comparar Pokémon</button>
 
-        <!-- História (entrada da Pokédex). Carrega separada da ficha principal. -->
         <section class="historia-pokemon">
           <h2>História</h2>
           <p id="historia-carregando">Carregando história…</p>
@@ -82,10 +67,8 @@
 
       </div>
 
-      <!-- COLUNA DA DIREITA (ficha): tipos, habilidades, efetividade, evolução e atributos. -->
       <div class="ficha">
 
-        <!-- Tipos do Pokémon, já traduzidos para português (RNF005). -->
         <section>
           <h2>Tipos</h2>
           <ul id="poke-tipos"></ul>
@@ -96,8 +79,6 @@
           <ul id="poke-habilidades"></ul>
         </section>
 
-        <!-- Efetividade de tipos: as quatro seções abaixo começam escondidas e só aparecem se tiverem conteúdo.
-             Ordem: super efetivo contra, resistências, fraquezas e imunidades. -->
         <section id="secao-super-efetivo" hidden>
           <h2>Super efetivo contra</h2>
           <p class="descricao-eficacia">Tipos de ataques deste Pokémon que podem causar dano super efetivo.</p>
@@ -122,24 +103,20 @@
           <ul id="poke-imunidades" class="tipos"></ul>
         </section>
 
-        <!-- LINHA EVOLUTIVA: quem evolui para quem. Os cards são criados pelo JavaScript. -->
         <section id="secao-evolucao">
           <h2>Linha evolutiva</h2>
           <p id="evolucao-carregando">Procurando a linha…</p>
           <p id="evolucao-vazia" hidden>Nenhuma evolução deste Pokémon está cadastrada.</p>
           <p id="evolucao-erro" hidden>Não foi possível carregar a linha evolutiva.</p>
 
-          <!-- Fileira de cima: a cadeia evolutiva em ordem, só com as formas padrão. -->
           <ol id="linha-evolucao" hidden></ol>
 
-          <!-- Fileira de baixo: Mega, Gigantamax, regionais etc. Só aparece se o Pokémon tiver alguma. -->
           <div id="bloco-variacoes" hidden>
             <h3 id="titulo-variacoes">Outras formas</h3>
             <ul id="lista-variacoes" aria-labelledby="titulo-variacoes"></ul>
           </div>
         </section>
 
-        <!-- SEIS ATRIBUTOS (RF003): tabela com nome, valor e barra colorida de cada atributo. -->
         <section>
           <h2>Atributos</h2>
           <table>
@@ -150,7 +127,7 @@
                 <th scope="col">Barra</th>
               </tr>
             </thead>
-            <!-- As seis linhas da tabela são criadas pelo JavaScript. -->
+
             <tbody id="poke-atributos"></tbody>
           </table>
 
@@ -165,8 +142,7 @@
 
   </main>
 
-  <!-- RODAPÉ: apresentação do projeto e links úteis (Sobre o projeto, GitHub, Grupo Optimus).
-       É igual em todas as páginas. Estilo: classes .site-footer e .footer-* em css/style.css. -->
+  <!-- SEÇÃO 4 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -214,8 +190,7 @@
     </div>
   </footer>
 
-  <!-- SEÇÃO 4 — SCRIPTS. A ORDEM IMPORTA: dicionários e dados primeiro, controlador da tela por último.
-       Esta tela não usa dados-filtro.js (só a tela inicial usa filtros). -->
+  <!-- SEÇÃO 5 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/traducoes.js"></script>
   <script src="js/dados-pokemon.js"></script>
   <script src="js/pokedex.js"></script>

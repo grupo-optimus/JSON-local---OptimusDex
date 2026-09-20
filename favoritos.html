@@ -1,24 +1,18 @@
 <!DOCTYPE html>
 
-<!-- TELA 3 — MEUS FAVORITOS (favoritos.html)
-     Objetivo: mostrar os Pokémon que o usuário favoritou (RF006), com busca e botão de remover (RF004).
-     Esta tela NÃO lê js/dados-pokemon.js: os Pokémon já estão salvos inteiros no localStorage (RF005/RNF001). -->
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
 
-  <!-- Faz o site se ajustar a telas pequenas, como celulares. -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Meus Favoritos</title>
 
-  <!-- Ícone da aba e arquivo de estilos (todo o visual está em css/style.css). -->
   <link rel="icon" href="img/pokeicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação.
-       O link "◀ Pokédex" (id btn-voltar) volta para a lista no estado em que ela estava (ligado em ui.js). -->
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -32,8 +26,7 @@
     </nav>
   </header>
 
-  <!-- SEÇÃO 2 — BUSCA NOS FAVORITOS: filtra só a lista que já está salva, sem consultar dados externos.
-       O botão .btn-limpar-busca é o "X" que apaga o texto digitado (ligado em ui.js). -->
+  <!-- SEÇÃO 2 — BUSCA: campo de busca nos favoritos -->
   <section>
     <form id="form-busca-fav" role="search">
       <label for="buscaFav">Buscar favoritos:</label>
@@ -46,32 +39,27 @@
     </form>
   </section>
 
-  <!-- SEÇÃO 3 — ÁREA PRINCIPAL: título, contador e lista de favoritos. -->
+  <!-- SEÇÃO 3 — LISTA: título, contador, cards e mensagens de estado -->
   <main>
 
-    <!-- Título da página e contador "N favorito(s)" (o número é escrito pelo JavaScript). -->
     <div class="cabecalho-pagina-favoritos">
       <h2 class="titulo-pagina">Meus Favoritos</h2>
       <p id="contador"></p>
     </div>
 
-    <!-- Lista de cards. Cada card é criado pelo JavaScript e tem um botão de remover (RF004). -->
     <ul id="lista-favoritos" hidden></ul>
 
-    <!-- Estado: nenhum favorito guardado ainda (RF006). -->
     <section id="estado-vazio" hidden>
       <h2>Nenhum favorito ainda</h2>
       <p>Você ainda não favoritou nenhum Pokémon.</p>
       <a href="index.html">Ir para a lista</a>
     </section>
 
-    <!-- Estado: existem favoritos, mas nenhum combina com o que foi digitado na busca. -->
     <p id="sem-resultado" hidden>Nenhum favorito com esse nome ou número.</p>
 
   </main>
 
-  <!-- RODAPÉ: apresentação do projeto e links úteis (Sobre o projeto, GitHub, Grupo Optimus).
-       É igual em todas as páginas. Estilo: classes .site-footer e .footer-* em css/style.css. -->
+  <!-- SEÇÃO 4 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -119,8 +107,7 @@
     </div>
   </footer>
 
-  <!-- SEÇÃO 4 — SCRIPTS. A ORDEM IMPORTA.
-       Não precisa de dados-pokemon.js nem de pokedex.js, mas precisa de traducoes.js (função normalizarTexto, usada na busca). -->
+  <!-- SEÇÃO 5 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/traducoes.js"></script>
   <script src="js/favoritos.js"></script>
   <script src="js/comparacao.js"></script>
