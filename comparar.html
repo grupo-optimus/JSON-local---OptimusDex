@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparar Pokémon — OptimusDex</title>
+  <link rel="icon" href="img/pokeicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>
+      <a class="marca" href="index.html" title="Voltar ao início">
+        <img src="img/pokeicon.png" alt="" class="marca-icone">
+        <span>Optimus<span>Dex</span></span>
+      </a>
+    </h1>
+    <nav>
+      <a href="index.html" id="btn-voltar">&#9664; Pokédex</a>
+      <a href="favoritos.html"><span class="icone-estrela">★</span> Meus Favoritos</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="cabecalho-comparacao">
+      <div>
+        <h2>Comparação de Pokémon</h2>
+        <p>Compare de 2 a 6 Pokémon pelos atributos-base.</p>
+      </div>
+      <button type="button" id="btn-limpar-comparacao">Limpar comparação</button>
+    </section>
+
+    <p id="estado-carregando-comparacao" hidden>Carregando comparação…</p>
+
+    <section id="estado-erro-comparacao" hidden>
+      <h2>Deu ruim</h2>
+      <p id="mensagem-erro-comparacao">Não foi possível carregar a comparação.</p>
+    </section>
+
+    <section id="estado-vazio-comparacao" class="estado-comparacao-vazio">
+      <h2>Selecione Pokémon para comparar</h2>
+      <p>Adicione pelo menos 2 Pokémon usando o botão “Comparar” nos cards ou na tela de detalhes.</p>
+      <a class="botao-comparacao-link" href="index.html">Voltar para a Pokédex</a>
+    </section>
+
+    <section id="tabela-comparacao" class="tabela-comparacao" hidden aria-labelledby="titulo-tabela-comparacao">
+      <h2 id="titulo-tabela-comparacao">Atributos-base</h2>
+      <div class="tabela-comparacao-scroll">
+        <table>
+          <thead>
+            <tr id="cabecalho-comparacao"></tr>
+          </thead>
+          <tbody id="corpo-comparacao"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="img/pokeicon.png" alt="" class="marca-icone">
+          <span>Optimus<span>Dex</span></span>
+        </div>
+        <p>Explore o universo Pokémon em uma Pokédex moderna, simples e interativa.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Projeto</h3>
+        <a href="sobre-projeto.html">Sobre o projeto</a>
+        <a href="index.html">Pokédex</a>
+        <a href="favoritos.html">Favoritos</a>
+        <a href="comparar.html">Comparar</a>
+      </div>
+      <div class="footer-section">
+        <h3>Recursos</h3>
+        <a href="https://github.com/grupo-optimus/Pokedex_Web_Pokemon_Browsing" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <div class="footer-section">
+        <h3>Grupo Optimus</h3>
+        <p>Projeto acadêmico desenvolvido pelo Grupo Optimus.</p>
+        <a href="https://grupo-optimus.github.io/" target="_blank" rel="noopener noreferrer">
+          Conheça outros projetos
+        </a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Grupo Optimus · OptimusDex</p>
+    </div>
+  </footer>
+
+  <script src="js/traducoes.js"></script>
+  <script src="js/dados-pokemon.js"></script>
+  <script src="js/pokedex.js"></script>
+  <script src="js/favoritos.js"></script>
+  <script src="js/comparacao.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pagina-comparacao.js"></script>
+</body>
+</html>

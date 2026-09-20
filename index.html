@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!-- Tela 1. Lista (RF001) e busca (RF002).
+     Agora o HTML e so a casca vazia: quem enche e o JavaScript com os dados de js/dados-pokemon.js. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <!-- Tela pequena nao quebra (RNF002). -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OptimusDex</title>
+
+  <link rel="icon" href="img/pokeicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ================= TOPO ================= -->
+  <header>
+    <h1>
+      <a class="marca" href="index.html" title="Voltar ao início">
+        <img src="img/pokeicon.png" alt="" class="marca-icone">
+        <span>Optimus<span>Dex</span></span>
+      </a>
+    </h1>
+    <nav>
+      <a href="favoritos.html"><span class="icone-estrela">★</span> Meus Favoritos</a>
+      <a href="comparar.html" class="link-comparacao">Comparar (0/6)</a>
+    </nav>
+  </header>
+
+  <hr>
+
+  <!-- ================= BUSCA (RF002) ================= -->
+  <!-- Form nao recarrega a pagina; o JS segura o submit e faz a busca. -->
+  <section>
+    <form id="form-busca" role="search">
+      <label for="busca">Nome ou número da Pokédex:</label>
+      <div class="campo-busca">
+        <input type="search" id="busca" name="q" placeholder="Nome ou ID">
+        <button type="button" class="btn-limpar-busca"
+                title="Limpar busca" aria-label="Limpar busca"></button>
+      </div>
+      <button type="submit">Buscar</button>
+      <button type="button" id="btn-filtros"
+              aria-expanded="false" aria-controls="painel-filtros">Filtros</button>
+    </form>
+
+    <!-- ================= FILTROS =================
+         As opcoes nascem no JS a partir dos dicionarios, senao seria
+         escrever 31 botoes na mao e ainda deixar eles fora de sincronia. -->
+    <div id="painel-filtros" hidden>
+
+      <fieldset>
+        <legend>Tipo</legend>
+        <div class="chips" id="filtro-tipos"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Região</legend>
+        <div class="chips" id="filtro-regioes"></div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Categoria</legend>
+        <div class="chips" id="filtro-categorias"></div>
+      </fieldset>
+
+      <p id="aviso-filtro" hidden>
+        Mega e Gigantamax são formas alternativas: elas não entram no filtro de região.
+      </p>
+
+      <div class="filtros-acoes">
+        <button type="button" id="btn-limpar-filtros">Limpar</button>
+        <button type="button" id="btn-aplicar-filtros">Aplicar</button>
+      </div>
+
+    </div>
+  </section>
+
+  <hr>
+
+  <main>
+
+    <!-- A requisicao ainda esta em andamento. -->
+    <p id="estado-carregando">Carregando Pokémons…</p>
+
+    <!-- Deu ruim ao carregar (RF007). Mensagem + botao de tentar de novo. -->
+    <section id="estado-erro" hidden>
+      <h2>Deu ruim</h2>
+      <p id="mensagem-erro">Não foi possível carregar os Pokémons.</p>
+      <button type="button" id="btn-tentar">Tentar novamente</button>
+    </section>
+
+    <!-- Buscou e nao achou nada. -->
+    <p id="sem-resultado" hidden>Nenhum Pokémon encontrado com esse nome ou número.</p>
+
+    <!-- Aqui o JS monta os cards (numero, nome, imagem, tipo). -->
+    <ul id="lista-pokemons" hidden></ul>
+
+    <!-- ================= PAGINACAO (RF001) ================= -->
+    <!-- Pokemon e mil. Mostra 20 por vez. -->
+    <nav id="paginacao" aria-label="Paginação" hidden>
+      <button type="button" id="btn-anterior">&#9664; Anterior</button>
+      <span id="info-pagina"></span>
+      <button type="button" id="btn-proxima">Próxima &#9654;</button>
+    </nav>
+
+  </main>
+
+  <hr>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-brand">
+            <div class="footer-logo">
+              <img src="img/pokeicon.png" alt="" class="marca-icone">
+              <span>Optimus<span>Dex</span></span>
+          </div>
+
+            <p>
+                Explore o universo Pokémon em uma Pokédex moderna,
+                simples e interativa.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Projeto</h3>
+            <a href="sobre-projeto.html">Sobre o projeto</a>
+            <a href="index.html">Pokédex</a>
+            <a href="favoritos.html">Favoritos</a>
+            <a href="comparar.html">Comparar</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Recursos</h3>
+            <a href="https://github.com/grupo-optimus/Pokedex_Web_Pokemon_Browsing" target="_blank" rel="noopener noreferrer">
+                GitHub
+            </a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Grupo Optimus</h3>
+            <p>Projeto acadêmico desenvolvido pelo Grupo Optimus.</p>
+            <a href="https://grupo-optimus.github.io/" target="_blank" rel="noopener noreferrer">
+                Conheça outros projetos
+            </a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            © 2026 Grupo Optimus · OptimusDex
+        </p>
+    </div>
+  </footer>
+
+  <!-- ================= SCRIPTS ================
+       Ordem importa. Dicionarios e dados primeiro, controlador da tela por ultimo. -->
+  <script src="js/traducoes.js"></script>
+  <script src="js/dados-filtro.js"></script>
+  <script src="js/dados-pokemon.js"></script>
+  <script src="js/pokedex.js"></script>
+  <script src="js/favoritos.js"></script>
+  <script src="js/comparacao.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pagina-lista.js"></script>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!-- Tela 5. Sobre o projeto.
+     Pagina estatica: nao le dados de Pokemon nem localStorage de Pokemon.
+     O unico JS aqui e o que acende o contador da comparacao no topo. -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sobre o projeto — OptimusDex</title>
+
+  <meta name="description"
+        content="O OptimusDex é uma Pokédex feita por fãs para fãs: explore, favorite e compare até 6 Pokémon lado a lado.">
+
+  <link rel="icon" href="img/pokeicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- ================= TOPO ================= -->
+  <header>
+    <h1>
+      <a class="marca" href="index.html" title="Voltar ao início">
+        <img src="img/pokeicon.png" alt="" class="marca-icone">
+        <span>Optimus<span>Dex</span></span>
+      </a>
+    </h1>
+    <nav>
+      <a href="index.html" id="btn-voltar">&#9664; Pokédex</a>
+      <a href="favoritos.html"><span class="icone-estrela">★</span> Meus Favoritos</a>
+      <a href="comparar.html" class="link-comparacao">Comparar (0/6)</a>
+    </nav>
+  </header>
+
+  <hr>
+
+  <main>
+
+    <section class="sobre-capa">
+      <img src="img/pokeicon.png" alt="" class="sobre-capa-icone">
+      <div>
+        <h2 class="titulo-pagina">Sobre o projeto</h2>
+        <p class="sobre-linha-fina">Uma Pokédex feita por fãs, para fãs.</p>
+      </div>
+    </section>
+
+    <article class="sobre-texto">
+
+      <p>
+        Criamos uma Pokédex completa, pensada por fãs para fãs, onde você pode
+        explorar todos os Pokémon com riqueza de detalhes, salvar seus favoritos
+        — aqueles que marcaram sua infância ou que você simplesmente não abre mão
+        no time — e ainda comparar até 6 Pokémon lado a lado para tomar a melhor
+        decisão na hora de montar sua equipe.
+      </p>
+
+      <p>
+        Mais do que uma ferramenta, o OptimusDex é um espaço para reviver essa
+        conexão com o universo Pokémon: organizar, comparar, relembrar e,
+        principalmente, continuar apaixonado por esse mundo que atravessa gerações.
+      </p>
+
+      <p>
+        Quem cresceu com Pokémon sabe: não é só sobre capturar criaturas, é sobre
+        a jornada. É lembrar da primeira vez que escolheu entre Bulbasaur,
+        Charmander e Squirtle, das tardes discutindo com os amigos qual time era o
+        mais forte, do orgulho de montar aquele time perfeito depois de horas
+        pesquisando estatísticas.
+      </p>
+
+      <p class="sobre-destaque">E toda essa paixão, você encontra aqui !!</p>
+
+    </article>
+
+    <!-- Atalhos: a pagina termina apontando pras tres telas que o texto cita. -->
+    <nav class="sobre-atalhos" aria-label="Atalhos do projeto">
+      <a href="index.html">Explorar a Pokédex</a>
+      <a href="favoritos.html">Meus Favoritos</a>
+      <a href="comparar.html">Comparar Pokémon</a>
+    </nav>
+
+  </main>
+
+  <hr>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-brand">
+            <div class="footer-logo">
+              <img src="img/pokeicon.png" alt="" class="marca-icone">
+              <span>Optimus<span>Dex</span></span>
+          </div>
+
+            <p>
+                Explore o universo Pokémon em uma Pokédex moderna,
+                simples e interativa.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Projeto</h3>
+            <a href="sobre-projeto.html" aria-current="page">Sobre o projeto</a>
+            <a href="index.html">Pokédex</a>
+            <a href="favoritos.html">Favoritos</a>
+            <a href="comparar.html">Comparar</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Recursos</h3>
+            <a href="https://github.com/grupo-optimus/Pokedex_Web_Pokemon_Browsing" target="_blank" rel="noopener noreferrer">
+                GitHub
+            </a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Grupo Optimus</h3>
+            <p>Projeto acadêmico desenvolvido pelo Grupo Optimus.</p>
+            <a href="https://grupo-optimus.github.io/" target="_blank" rel="noopener noreferrer">
+                Conheça outros projetos
+            </a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            © 2026 Grupo Optimus · OptimusDex
+        </p>
+    </div>
+  </footer>
+
+  <!-- Sem pokedex.js: esta tela nao mostra Pokemon.
+       comparacao.js + ui.js so pra manter o contador do topo igual ao das outras. -->
+  <script src="js/comparacao.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pagina-sobre.js"></script>
+</body>
+</html>

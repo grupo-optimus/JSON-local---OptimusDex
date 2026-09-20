@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<!-- Tela 3. Pokemon guardados (RF006).
+     Aqui NAO le js/dados-pokemon.js: tudo ja esta salvo no localStorage (RF005/RNF001). -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meus Favoritos</title>
+  
+  <link rel="icon" href="img/pokeicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>
+      <a class="marca" href="index.html" title="Voltar ao início">
+        <img src="img/pokeicon.png" alt="" class="marca-icone">
+        <span>Optimus<span>Dex</span></span>
+      </a>
+    </h1>
+    <nav>
+      <a href="index.html" id="btn-voltar">&#9664; Pokédex</a>
+      <a href="comparar.html" class="link-comparacao">Comparar (0/6)</a>
+    </nav>
+  </header>
+
+  <hr>
+
+  <!-- Filtra na lista que ja esta salva, sem sair pra rede. -->
+  <section>
+    <form id="form-busca-fav" role="search">
+      <label for="buscaFav">Buscar favoritos:</label>
+      <div class="campo-busca">
+        <input type="search" id="buscaFav" name="q" placeholder="Nome ou número">
+        <button type="button" class="btn-limpar-busca"
+                title="Limpar busca" aria-label="Limpar busca"></button>
+      </div>
+      <button type="submit"> Buscar</button>
+    </form>
+  </section>
+
+  <hr>
+
+  <main>
+
+    <div class="cabecalho-pagina-favoritos">
+      <h2 class="titulo-pagina">Meus Favoritos</h2>
+      <p id="contador"></p>
+    </div>
+
+    <!-- Cards nascem no JS, cada um com botao de remover (RF004). -->
+    <ul id="lista-favoritos" hidden></ul>
+
+    <!-- Nenhum favorito guardado (RF006). -->
+    <section id="estado-vazio" hidden>
+      <h2>Nenhum favorito ainda</h2>
+      <p>Você ainda não favoritou nenhum Pokémon.</p>
+      <a href="index.html">Ir para a lista</a>
+    </section>
+
+    <!-- Tem favorito, mas a busca nao achou nenhum. -->
+    <p id="sem-resultado" hidden>Nenhum favorito com esse nome ou número.</p>
+
+  </main>
+
+  <hr>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <img src="img/pokeicon.png" alt="" class="marca-icone">
+                <span>Optimus<span>Dex</span></span>
+            </div>
+
+            <p>
+                Explore o universo Pokémon em uma Pokédex moderna,
+                simples e interativa.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Projeto</h3>
+            <a href="sobre-projeto.html">Sobre o projeto</a>
+            <a href="index.html">Pokédex</a>
+            <a href="favoritos.html">Favoritos</a>
+            <a href="comparar.html">Comparar</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Recursos</h3>
+            <a href="https://github.com/grupo-optimus/Pokedex_Web_Pokemon_Browsing" target="_blank" rel="noopener noreferrer">
+                GitHub
+            </a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Grupo Optimus</h3>
+            <p>Projeto acadêmico desenvolvido pelo Grupo Optimus.</p>
+            <a href="https://grupo-optimus.github.io/" target="_blank" rel="noopener noreferrer">
+                Conheça outros projetos
+            </a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            © 2026 Grupo Optimus · OptimusDex
+        </p>
+    </div>
+  </footer>
+
+  <!-- Aqui nao precisa do pokedex.js, mas precisa do tradutor (normalizarTexto). -->
+  <script src="js/traducoes.js"></script>
+  <script src="js/favoritos.js"></script>
+  <script src="js/comparacao.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pagina-favoritos.js"></script>
+</body>
+</html>

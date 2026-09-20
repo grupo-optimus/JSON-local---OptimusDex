@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<!-- Tela 2. Detalhes (RF003) e botao de favoritar (RF004).
+     Qual Pokemon aparece? O numero que vier no endereco: detalhes.html?id=4 -->
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detalhes do Pokémon</title>
+
+  <link rel="icon" href="img/pokeicon.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header>
+    <h1>
+      <a class="marca" href="index.html" title="Voltar ao início">
+        <img src="img/pokeicon.png" alt="" class="marca-icone">
+        <span>Optimus<span>Dex</span></span>
+      </a>
+    </h1>
+    <nav>
+      <a href="index.html" id="btn-voltar">&#9664; Pokédex</a>
+      <a href="favoritos.html"><span class="icone-estrela">★</span> Meus Favoritos</a>
+      <a href="comparar.html" class="link-comparacao">Comparar (0/6)</a>
+    </nav>
+  </header>
+
+  <hr>
+
+  <main>
+
+    <h2 class="titulo-pagina">Detalhes do Pokémon</h2>
+
+    <!-- Esperando a resposta. -->
+    <p id="estado-carregando">Carregando…</p>
+
+    <!-- RF007 de novo. Numero errado tambem cai aqui. -->
+    <section id="estado-erro" hidden>
+      <h2>Deu ruim</h2>
+      <p id="mensagem-erro">Não foi possível carregar este Pokémon.</p>
+      <button type="button" id="btn-tentar">Tentar novamente</button>
+    </section>
+
+    <!-- ================= O POKEMON ================= -->
+    <!-- Casca vazia. JS enche com os dados de js/dados-pokemon.js. -->
+    <div id="conteudo" hidden>
+
+      <!-- O visor e os dois botoes dele. Coluna da esquerda. -->
+      <div class="visor">
+
+        <figure>
+          <img id="poke-imagem" src="" alt="" width="200" height="200">
+          <figcaption>
+            <strong id="poke-numero"></strong>
+            <span id="poke-nome"></span>
+          </figcaption>
+        </figure>
+
+        <!-- Troca o desenho normal pelo shiny (a cor rara do Pokemon). -->
+        <button type="button" id="btn-shiny" aria-pressed="false">Ver shiny</button>
+
+        <!-- Mesmo botao poe e tira (RF004). Texto muda sozinho. -->
+        <button type="button" id="btn-favorito" aria-pressed="false">☆ Adicionar aos favoritos</button>
+        <button type="button" id="btn-comparar" aria-pressed="false">+ Comparar Pokémon</button>
+
+        <section id="secao-historia" class="historia-pokemon">
+          <h2>História</h2>
+          <p id="historia-carregando">Carregando história…</p>
+          <p id="historia-erro" hidden>Não foi possível carregar a história deste Pokémon.</p>
+          <p id="poke-historia" hidden></p>
+        </section>
+
+      </div>
+
+      <hr>
+
+      <!-- A ficha do Pokemon. Vive na coluna da direita, ao lado do visor. -->
+      <div class="ficha">
+
+        <!-- Tipo em portugues (RNF005). -->
+        <section>
+          <h2>Tipos</h2>
+          <ul id="poke-tipos"></ul>
+        </section>
+
+        <section>
+          <h2>Habilidades</h2>
+          <ul id="poke-habilidades"></ul>
+        </section>
+
+        <section id="secao-super-efetivo" hidden>
+          <h2>Super efetivo contra</h2>
+          <p class="descricao-eficacia">Tipos de ataques deste Pokémon que podem causar dano super efetivo.</p>
+          <ul id="poke-super-eficaz" class="tipos"></ul>
+        </section>
+
+        <section id="secao-vantagens" hidden>
+          <h2>Resistências</h2>
+          <p class="descricao-eficacia">Tipos de ataques que causam menos dano a este Pokémon.</p>
+          <ul id="poke-vantagens" class="tipos"></ul>
+        </section>
+
+        <section id="secao-fraquezas" hidden>
+          <h2>Fraquezas</h2>
+          <p class="descricao-eficacia">Tipos de ataques que causam mais dano a este Pokémon.</p>
+          <ul id="poke-fraquezas" class="tipos"></ul>
+        </section>
+
+        <section id="secao-imunidades" hidden>
+          <h2>Imunidades</h2>
+          <p class="descricao-eficacia">Tipos de ataques que não causam dano.</p>
+          <ul id="poke-imunidades" class="tipos"></ul>
+        </section>
+
+        <hr>
+
+        <!-- ================= LINHA EVOLUTIVA ================= -->
+        <!-- Quem vira quem. Os cards nascem no JS. -->
+        <section id="secao-evolucao">
+          <h2>Linha evolutiva</h2>
+          <p id="evolucao-carregando">Procurando a linha…</p>
+          <p id="evolucao-vazia" hidden>Nenhuma evolução deste Pokémon está cadastrada.</p>
+          <p id="evolucao-erro" hidden>Não foi possível carregar a linha evolutiva.</p>
+
+          <!-- Fileira de cima: a cadeia em ordem, so com as formas padrao. -->
+          <ol id="linha-evolucao" hidden></ol>
+
+          <!-- Fileira de baixo: Mega, Gigantamax, regionais e afins.
+               So aparece quando a especie tem alguma. -->
+          <div id="bloco-variacoes" hidden>
+            <h3 id="titulo-variacoes">Outras formas</h3>
+            <ul id="lista-variacoes" aria-labelledby="titulo-variacoes"></ul>
+          </div>
+        </section>
+
+        <hr>
+
+        <!-- ================= SEIS ATRIBUTOS (RF003) ================= -->
+        <section>
+          <h2>Atributos</h2>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Atributo</th>
+                <th scope="col">Valor</th>
+                <th scope="col">Barra</th>
+              </tr>
+            </thead>
+            <!-- As seis linhas nascem no JS. -->
+            <tbody id="poke-atributos"></tbody>
+          </table>
+
+          <p class="atributos-total">
+            Total dos atributos: <strong id="poke-total-atributos">0</strong>
+          </p>
+        </section>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <hr>
+
+  <footer class="site-footer">
+    <div class="footer-container">
+
+        <div class="footer-brand">
+            <div class="footer-logo">
+                <img src="img/pokeicon.png" alt="" class="marca-icone">
+                <span>Optimus<span>Dex</span></span>
+            </div>
+
+            <p>
+                Explore o universo Pokémon em uma Pokédex moderna,
+                simples e interativa.
+            </p>
+        </div>
+
+        <div class="footer-section">
+            <h3>Projeto</h3>
+            <a href="sobre-projeto.html">Sobre o projeto</a>
+            <a href="index.html">Pokédex</a>
+            <a href="favoritos.html">Favoritos</a>
+            <a href="comparar.html">Comparar</a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Recursos</h3>
+            <a href="https://github.com/grupo-optimus/Pokedex_Web_Pokemon_Browsing" target="_blank" rel="noopener noreferrer">
+                GitHub
+            </a>
+        </div>
+
+        <div class="footer-section">
+            <h3>Grupo Optimus</h3>
+            <p>Projeto acadêmico desenvolvido pelo Grupo Optimus.</p>
+            <a href="https://grupo-optimus.github.io/" target="_blank" rel="noopener noreferrer">
+                Conheça outros projetos
+            </a>
+        </div>
+
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            © 2026 Grupo Optimus · OptimusDex
+        </p>
+    </div>
+  </footer>
+
+  <script src="js/traducoes.js"></script>
+  <script src="js/dados-pokemon.js"></script>
+  <script src="js/pokedex.js"></script>
+  <script src="js/favoritos.js"></script>
+  <script src="js/comparacao.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/pagina-detalhes.js"></script>
+</body>
+</html>
