@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<!-- Tela 1. Lista (RF001) e busca (RF002).
-     Agora o HTML e so a casca vazia: quem enche e o JavaScript com os dados de js/dados-pokemon.js. -->
+
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <!-- Tela pequena nao quebra (RNF002). -->
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>OptimusDex</title>
 
@@ -13,7 +12,7 @@
 </head>
 <body>
 
-  <!-- ================= TOPO ================= -->
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -27,10 +26,7 @@
     </nav>
   </header>
 
-  <hr>
-
-  <!-- ================= BUSCA (RF002) ================= -->
-  <!-- Form nao recarrega a pagina; o JS segura o submit e faz a busca. -->
+  <!-- SEÇÃO 2 — BUSCA: campo de busca e botões Buscar e Filtros -->
   <section>
     <form id="form-busca" role="search">
       <label for="busca">Nome ou número da Pokédex:</label>
@@ -44,9 +40,7 @@
               aria-expanded="false" aria-controls="painel-filtros">Filtros</button>
     </form>
 
-    <!-- ================= FILTROS =================
-         As opcoes nascem no JS a partir dos dicionarios, senao seria
-         escrever 31 botoes na mao e ainda deixar eles fora de sincronia. -->
+    <!-- SEÇÃO 3 — FILTROS: painel com tipo, região e categoria -->
     <div id="painel-filtros" hidden>
 
       <fieldset>
@@ -76,28 +70,21 @@
     </div>
   </section>
 
-  <hr>
-
+  <!-- SEÇÃO 4 — RESULTADOS: mensagens de estado, lista de cards e paginação -->
   <main>
 
-    <!-- A requisicao ainda esta em andamento. -->
     <p id="estado-carregando">Carregando Pokémons…</p>
 
-    <!-- Deu ruim ao carregar (RF007). Mensagem + botao de tentar de novo. -->
     <section id="estado-erro" hidden>
       <h2>Deu ruim</h2>
       <p id="mensagem-erro">Não foi possível carregar os Pokémons.</p>
       <button type="button" id="btn-tentar">Tentar novamente</button>
     </section>
 
-    <!-- Buscou e nao achou nada. -->
     <p id="sem-resultado" hidden>Nenhum Pokémon encontrado com esse nome ou número.</p>
 
-    <!-- Aqui o JS monta os cards (numero, nome, imagem, tipo). -->
     <ul id="lista-pokemons" hidden></ul>
 
-    <!-- ================= PAGINACAO (RF001) ================= -->
-    <!-- Pokemon e mil. Mostra 20 por vez. -->
     <nav id="paginacao" aria-label="Paginação" hidden>
       <button type="button" id="btn-anterior">&#9664; Anterior</button>
       <span id="info-pagina"></span>
@@ -106,8 +93,7 @@
 
   </main>
 
-  <hr>
-
+  <!-- SEÇÃO 5 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -155,8 +141,7 @@
     </div>
   </footer>
 
-  <!-- ================= SCRIPTS ================
-       Ordem importa. Dicionarios e dados primeiro, controlador da tela por ultimo. -->
+  <!-- SEÇÃO 6 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/traducoes.js"></script>
   <script src="js/dados-filtro.js"></script>
   <script src="js/dados-pokemon.js"></script>

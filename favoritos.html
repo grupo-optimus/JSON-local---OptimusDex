@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<!-- Tela 3. Pokemon guardados (RF006).
-     Aqui NAO le js/dados-pokemon.js: tudo ja esta salvo no localStorage (RF005/RNF001). -->
+
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Meus Favoritos</title>
-  
+
   <link rel="icon" href="img/pokeicon.png">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -25,9 +26,7 @@
     </nav>
   </header>
 
-  <hr>
-
-  <!-- Filtra na lista que ja esta salva, sem sair pra rede. -->
+  <!-- SEÇÃO 2 — BUSCA: campo de busca nos favoritos -->
   <section>
     <form id="form-busca-fav" role="search">
       <label for="buscaFav">Buscar favoritos:</label>
@@ -40,8 +39,7 @@
     </form>
   </section>
 
-  <hr>
-
+  <!-- SEÇÃO 3 — LISTA: título, contador, cards e mensagens de estado -->
   <main>
 
     <div class="cabecalho-pagina-favoritos">
@@ -49,23 +47,19 @@
       <p id="contador"></p>
     </div>
 
-    <!-- Cards nascem no JS, cada um com botao de remover (RF004). -->
     <ul id="lista-favoritos" hidden></ul>
 
-    <!-- Nenhum favorito guardado (RF006). -->
     <section id="estado-vazio" hidden>
       <h2>Nenhum favorito ainda</h2>
       <p>Você ainda não favoritou nenhum Pokémon.</p>
       <a href="index.html">Ir para a lista</a>
     </section>
 
-    <!-- Tem favorito, mas a busca nao achou nenhum. -->
     <p id="sem-resultado" hidden>Nenhum favorito com esse nome ou número.</p>
 
   </main>
 
-  <hr>
-
+  <!-- SEÇÃO 4 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -113,7 +107,7 @@
     </div>
   </footer>
 
-  <!-- Aqui nao precisa do pokedex.js, mas precisa do tradutor (normalizarTexto). -->
+  <!-- SEÇÃO 5 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/traducoes.js"></script>
   <script src="js/favoritos.js"></script>
   <script src="js/comparacao.js"></script>

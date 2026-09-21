@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<!-- Tela 2. Detalhes (RF003) e botao de favoritar (RF004).
-     Qual Pokemon aparece? O numero que vier no endereco: detalhes.html?id=4 -->
+
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detalhes do Pokémon</title>
 
@@ -12,6 +12,7 @@
 </head>
 <body>
 
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -26,27 +27,22 @@
     </nav>
   </header>
 
-  <hr>
-
+  <!-- SEÇÃO 2 — PRINCIPAL: título e mensagens de carregando e erro -->
   <main>
 
     <h2 class="titulo-pagina">Detalhes do Pokémon</h2>
 
-    <!-- Esperando a resposta. -->
     <p id="estado-carregando">Carregando…</p>
 
-    <!-- RF007 de novo. Numero errado tambem cai aqui. -->
     <section id="estado-erro" hidden>
       <h2>Deu ruim</h2>
       <p id="mensagem-erro">Não foi possível carregar este Pokémon.</p>
       <button type="button" id="btn-tentar">Tentar novamente</button>
     </section>
 
-    <!-- ================= O POKEMON ================= -->
-    <!-- Casca vazia. JS enche com os dados de js/dados-pokemon.js. -->
+    <!-- SEÇÃO 3 — FICHA DO POKÉMON: visor (imagem, botões, história) e ficha (tipos, habilidades, efetividade, evolução, atributos) -->
     <div id="conteudo" hidden>
 
-      <!-- O visor e os dois botoes dele. Coluna da esquerda. -->
       <div class="visor">
 
         <figure>
@@ -57,14 +53,12 @@
           </figcaption>
         </figure>
 
-        <!-- Troca o desenho normal pelo shiny (a cor rara do Pokemon). -->
         <button type="button" id="btn-shiny" aria-pressed="false">Ver shiny</button>
 
-        <!-- Mesmo botao poe e tira (RF004). Texto muda sozinho. -->
         <button type="button" id="btn-favorito" aria-pressed="false">☆ Adicionar aos favoritos</button>
         <button type="button" id="btn-comparar" aria-pressed="false">+ Comparar Pokémon</button>
 
-        <section id="secao-historia" class="historia-pokemon">
+        <section class="historia-pokemon">
           <h2>História</h2>
           <p id="historia-carregando">Carregando história…</p>
           <p id="historia-erro" hidden>Não foi possível carregar a história deste Pokémon.</p>
@@ -73,12 +67,8 @@
 
       </div>
 
-      <hr>
-
-      <!-- A ficha do Pokemon. Vive na coluna da direita, ao lado do visor. -->
       <div class="ficha">
 
-        <!-- Tipo em portugues (RNF005). -->
         <section>
           <h2>Tipos</h2>
           <ul id="poke-tipos"></ul>
@@ -113,30 +103,20 @@
           <ul id="poke-imunidades" class="tipos"></ul>
         </section>
 
-        <hr>
-
-        <!-- ================= LINHA EVOLUTIVA ================= -->
-        <!-- Quem vira quem. Os cards nascem no JS. -->
         <section id="secao-evolucao">
           <h2>Linha evolutiva</h2>
           <p id="evolucao-carregando">Procurando a linha…</p>
           <p id="evolucao-vazia" hidden>Nenhuma evolução deste Pokémon está cadastrada.</p>
           <p id="evolucao-erro" hidden>Não foi possível carregar a linha evolutiva.</p>
 
-          <!-- Fileira de cima: a cadeia em ordem, so com as formas padrao. -->
           <ol id="linha-evolucao" hidden></ol>
 
-          <!-- Fileira de baixo: Mega, Gigantamax, regionais e afins.
-               So aparece quando a especie tem alguma. -->
           <div id="bloco-variacoes" hidden>
             <h3 id="titulo-variacoes">Outras formas</h3>
             <ul id="lista-variacoes" aria-labelledby="titulo-variacoes"></ul>
           </div>
         </section>
 
-        <hr>
-
-        <!-- ================= SEIS ATRIBUTOS (RF003) ================= -->
         <section>
           <h2>Atributos</h2>
           <table>
@@ -147,7 +127,7 @@
                 <th scope="col">Barra</th>
               </tr>
             </thead>
-            <!-- As seis linhas nascem no JS. -->
+
             <tbody id="poke-atributos"></tbody>
           </table>
 
@@ -162,8 +142,7 @@
 
   </main>
 
-  <hr>
-
+  <!-- SEÇÃO 4 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -211,6 +190,7 @@
     </div>
   </footer>
 
+  <!-- SEÇÃO 5 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/traducoes.js"></script>
   <script src="js/dados-pokemon.js"></script>
   <script src="js/pokedex.js"></script>

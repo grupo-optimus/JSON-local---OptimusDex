@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<!-- Tela 5. Sobre o projeto.
-     Pagina estatica: nao le dados de Pokemon nem localStorage de Pokemon.
-     O unico JS aqui e o que acende o contador da comparacao no topo. -->
+
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sobre o projeto — OptimusDex</title>
 
@@ -16,7 +15,7 @@
 </head>
 <body>
 
-  <!-- ================= TOPO ================= -->
+  <!-- SEÇÃO 1 — CABEÇALHO: logo e menu de navegação -->
   <header>
     <h1>
       <a class="marca" href="index.html" title="Voltar ao início">
@@ -31,8 +30,7 @@
     </nav>
   </header>
 
-  <hr>
-
+  <!-- SEÇÃO 2 — CONTEÚDO: capa, texto de apresentação e atalhos -->
   <main>
 
     <section class="sobre-capa">
@@ -71,7 +69,6 @@
 
     </article>
 
-    <!-- Atalhos: a pagina termina apontando pras tres telas que o texto cita. -->
     <nav class="sobre-atalhos" aria-label="Atalhos do projeto">
       <a href="index.html">Explorar a Pokédex</a>
       <a href="favoritos.html">Meus Favoritos</a>
@@ -80,8 +77,7 @@
 
   </main>
 
-  <hr>
-
+  <!-- SEÇÃO 3 — RODAPÉ: apresentação do projeto e links -->
   <footer class="site-footer">
     <div class="footer-container">
 
@@ -129,8 +125,7 @@
     </div>
   </footer>
 
-  <!-- Sem pokedex.js: esta tela nao mostra Pokemon.
-       comparacao.js + ui.js so pra manter o contador do topo igual ao das outras. -->
+  <!-- SEÇÃO 4 — SCRIPTS: arquivos JavaScript na ordem de carregamento -->
   <script src="js/comparacao.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/pagina-sobre.js"></script>
